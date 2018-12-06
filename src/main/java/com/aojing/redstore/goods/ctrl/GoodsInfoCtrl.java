@@ -1,6 +1,6 @@
 package com.aojing.redstore.goods.ctrl;
 
-import com.aojing.redstore.goods.common.ServerResponse;
+import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.pojo.GoodsInfo;
 import com.aojing.redstore.goods.service.GoodsTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ public class GoodsInfoCtrl {
     @Autowired
     private GoodsTypeService goodsTypeService;
 
-    public ServerResponse<List<GoodsInfo>> add(){
+    public Result<List<GoodsInfo>> add(){
 
         List<GoodsInfo> list = new ArrayList<>();
 
-        return ServerResponse.createBySuccess(list);
+        return Result.createBySuccess(list);
     }
 }

@@ -1,9 +1,8 @@
 package com.aojing.redstore.goods.service;
 
-import com.aojing.redstore.goods.common.ServerResponse;
+import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.pojo.GoodsType;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,7 +16,7 @@ public interface GoodsTypeService {
      * @param goodsType
      * @return
      */
-    ServerResponse addType(GoodsType goodsType);
+    Result addType(GoodsType goodsType);
 
     /**
      * 删除商品类目关系信息 根据商品id,类型id
@@ -25,7 +24,7 @@ public interface GoodsTypeService {
      * @param typeId
      * @return
      */
-    public ServerResponse RemoveGoodsFromType(Integer goodsId, Integer typeId);
+   // public Result removeGoodsFromType();
 
 
     /**
@@ -34,7 +33,7 @@ public interface GoodsTypeService {
      * @param typeId
      * @return
      */
-    public ServerResponse AddGoodsInType(Integer goodsId, Integer typeId);
+   // public Result addGoodsInType();
 
     /**
      * 删除类目
@@ -43,7 +42,7 @@ public interface GoodsTypeService {
      * @return
      */
     @Deprecated
-    public ServerResponse delType(Integer goodsTypeId);
+    public Result delType(Integer goodsTypeId);
 
     /**
      * 更新类目
@@ -51,11 +50,7 @@ public interface GoodsTypeService {
      * @param goodsType
      * @return
      */
-    public ServerResponse updateType(GoodsType goodsType);
+    public Result updateType(GoodsType goodsType);
 
-    /**
-     * 查询全部商品-类目
-     * @return
-     */
-    public ServerResponse<Set<GoodsType>> queryAllType();
+
 }

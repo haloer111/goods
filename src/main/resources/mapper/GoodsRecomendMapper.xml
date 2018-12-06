@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.aojing.redstore.goods.dao.RecomendGoodsMapper" >
-  <resultMap id="BaseResultMap" type="com.aojing.redstore.goods.pojo.RecomendGoods" >
+<mapper namespace="com.aojing.redstore.goods.dao.GoodsRecomendMapper" >
+  <resultMap id="BaseResultMap" type="com.aojing.redstore.goods.pojo.GoodsRecomend" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="seller_id" property="sellerId" jdbcType="INTEGER" />
-    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
-    <result column="recomender" property="recomender" jdbcType="INTEGER" />
+    <result column="seller_id" property="sellerId" jdbcType="VARCHAR" />
+    <result column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="menu_id" property="menuId" jdbcType="VARCHAR" />
+    <result column="recomender" property="recomender" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, seller_id, goods_id, recomender, create_time, update_time
+    id, seller_id, goods_id, menu_id, recomender, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from recomend_goods_tb
+    from goods_recomend_tb
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from recomend_goods_tb
+    delete from goods_recomend_tb
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.aojing.redstore.goods.pojo.RecomendGoods" >
-    insert into recomend_goods_tb (id, seller_id, goods_id, 
-      recomender, create_time, update_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{sellerId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
-      #{recomender,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+  <insert id="insert" parameterType="com.aojing.redstore.goods.pojo.GoodsRecomend" >
+    insert into goods_recomend_tb (id, seller_id, goods_id, 
+      menu_id, recomender, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{sellerId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
+      #{menuId,jdbcType=VARCHAR}, #{recomender,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.aojing.redstore.goods.pojo.RecomendGoods" >
-    insert into recomend_goods_tb
+  <insert id="insertSelective" parameterType="com.aojing.redstore.goods.pojo.GoodsRecomend" >
+    insert into goods_recomend_tb
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -41,6 +42,9 @@
       </if>
       <if test="goodsId != null" >
         goods_id,
+      </if>
+      <if test="menuId != null" >
+        menu_id,
       </if>
       <if test="recomender != null" >
         recomender,
@@ -57,13 +61,16 @@
         #{id,jdbcType=INTEGER},
       </if>
       <if test="sellerId != null" >
-        #{sellerId,jdbcType=INTEGER},
+        #{sellerId,jdbcType=VARCHAR},
       </if>
       <if test="goodsId != null" >
-        #{goodsId,jdbcType=INTEGER},
+        #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=VARCHAR},
       </if>
       <if test="recomender != null" >
-        #{recomender,jdbcType=INTEGER},
+        #{recomender,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -73,17 +80,20 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.aojing.redstore.goods.pojo.RecomendGoods" >
-    update recomend_goods_tb
+  <update id="updateByPrimaryKeySelective" parameterType="com.aojing.redstore.goods.pojo.GoodsRecomend" >
+    update goods_recomend_tb
     <set >
       <if test="sellerId != null" >
-        seller_id = #{sellerId,jdbcType=INTEGER},
+        seller_id = #{sellerId,jdbcType=VARCHAR},
       </if>
       <if test="goodsId != null" >
-        goods_id = #{goodsId,jdbcType=INTEGER},
+        goods_id = #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        menu_id = #{menuId,jdbcType=VARCHAR},
       </if>
       <if test="recomender != null" >
-        recomender = #{recomender,jdbcType=INTEGER},
+        recomender = #{recomender,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -94,11 +104,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.aojing.redstore.goods.pojo.RecomendGoods" >
-    update recomend_goods_tb
-    set seller_id = #{sellerId,jdbcType=INTEGER},
-      goods_id = #{goodsId,jdbcType=INTEGER},
-      recomender = #{recomender,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.aojing.redstore.goods.pojo.GoodsRecomend" >
+    update goods_recomend_tb
+    set seller_id = #{sellerId,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=VARCHAR},
+      menu_id = #{menuId,jdbcType=VARCHAR},
+      recomender = #{recomender,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
