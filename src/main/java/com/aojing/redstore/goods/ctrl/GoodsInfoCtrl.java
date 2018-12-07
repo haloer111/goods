@@ -1,13 +1,11 @@
 package com.aojing.redstore.goods.ctrl;
 
 import com.aojing.redstore.goods.common.Result;
-import com.aojing.redstore.goods.pojo.GoodsInfo;
+import com.aojing.redstore.goods.service.GoodsInfoService;
 import com.aojing.redstore.goods.service.GoodsTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author gexiao
@@ -18,11 +16,16 @@ public class GoodsInfoCtrl {
 
     @Autowired
     private GoodsTypeService goodsTypeService;
+    @Autowired
+    private GoodsInfoService goodsInfoService;
 
-    public Result<List<GoodsInfo>> add(){
 
-        List<GoodsInfo> list = new ArrayList<>();
+    @GetMapping("/upload")
+    public Result<String> delFile(){
 
-        return Result.createBySuccess(list);
+        return goodsInfoService.delMovie("1.png","1");
+        //return Result.createBySuccess(list);
     }
+
+
 }

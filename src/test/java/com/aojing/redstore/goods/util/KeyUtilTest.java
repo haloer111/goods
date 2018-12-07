@@ -13,7 +13,7 @@ public class KeyUtilTest extends GoodsApplicationTests {
 
     @Test
     public void createKey() {
-        String key = KeyUtil.createKey();
+        String key = KeyUtil.get32UUID();
         System.out.println("=========="+key);
     }
     //1683831544077678362

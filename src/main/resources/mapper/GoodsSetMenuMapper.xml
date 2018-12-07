@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.aojing.redstore.goods.dao.GoodsSetMenuMapper" >
   <resultMap id="BaseResultMap" type="com.aojing.redstore.goods.pojo.GoodsSetMenu" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="good_set_id" property="goodSetId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="type_id" property="typeId" jdbcType="VARCHAR" />
     <result column="instruction" property="instruction" jdbcType="VARCHAR" />
@@ -22,41 +23,44 @@
     <result column="sell_count" property="sellCount" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, type_id, instruction, enable_count, unit, sell_status, goods_set_desc, 
+    id, good_set_id, name, type_id, instruction, enable_count, unit, sell_status, goods_set_desc, 
     sales_price, original_price, goods_code, cost_price, create_time, update_time, start_time, 
     end_time, precondition, sell_count
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from goods_set_menu_tb
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from goods_set_menu_tb
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.aojing.redstore.goods.pojo.GoodsSetMenu" >
-    insert into goods_set_menu_tb (id, name, type_id, 
-      instruction, enable_count, unit, 
-      sell_status, goods_set_desc, sales_price, 
-      original_price, goods_code, cost_price, 
-      create_time, update_time, start_time, 
-      end_time, precondition, sell_count
-      )
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, 
-      #{instruction,jdbcType=VARCHAR}, #{enableCount,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, 
-      #{sellStatus,jdbcType=INTEGER}, #{goodsSetDesc,jdbcType=VARCHAR}, #{salesPrice,jdbcType=DECIMAL}, 
-      #{originalPrice,jdbcType=DECIMAL}, #{goodsCode,jdbcType=VARCHAR}, #{costPrice,jdbcType=DECIMAL}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{precondition,jdbcType=VARCHAR}, #{sellCount,jdbcType=INTEGER}
-      )
+    insert into goods_set_menu_tb (id, good_set_id, name, 
+      type_id, instruction, enable_count, 
+      unit, sell_status, goods_set_desc, 
+      sales_price, original_price, goods_code, 
+      cost_price, create_time, update_time, 
+      start_time, end_time, precondition, 
+      sell_count)
+    values (#{id,jdbcType=INTEGER}, #{goodSetId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=VARCHAR}, #{instruction,jdbcType=VARCHAR}, #{enableCount,jdbcType=INTEGER}, 
+      #{unit,jdbcType=VARCHAR}, #{sellStatus,jdbcType=INTEGER}, #{goodsSetDesc,jdbcType=VARCHAR}, 
+      #{salesPrice,jdbcType=DECIMAL}, #{originalPrice,jdbcType=DECIMAL}, #{goodsCode,jdbcType=VARCHAR}, 
+      #{costPrice,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{precondition,jdbcType=VARCHAR}, 
+      #{sellCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.aojing.redstore.goods.pojo.GoodsSetMenu" >
     insert into goods_set_menu_tb
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="goodSetId != null" >
+        good_set_id,
       </if>
       <if test="name != null" >
         name,
@@ -112,7 +116,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="goodSetId != null" >
+        #{goodSetId,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -170,6 +177,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.aojing.redstore.goods.pojo.GoodsSetMenu" >
     update goods_set_menu_tb
     <set >
+      <if test="goodSetId != null" >
+        good_set_id = #{goodSetId,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -222,11 +232,12 @@
         sell_count = #{sellCount,jdbcType=INTEGER},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.aojing.redstore.goods.pojo.GoodsSetMenu" >
     update goods_set_menu_tb
-    set name = #{name,jdbcType=VARCHAR},
+    set good_set_id = #{goodSetId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       type_id = #{typeId,jdbcType=VARCHAR},
       instruction = #{instruction,jdbcType=VARCHAR},
       enable_count = #{enableCount,jdbcType=INTEGER},
@@ -243,6 +254,6 @@
       end_time = #{endTime,jdbcType=TIMESTAMP},
       precondition = #{precondition,jdbcType=VARCHAR},
       sell_count = #{sellCount,jdbcType=INTEGER}
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

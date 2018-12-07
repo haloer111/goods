@@ -5,24 +5,21 @@ import lombok.Getter;
 
 /**
  * @author gexiao
- * @date 2018/12/4 13:48
+ * @date 2018/12/7 14:42
  */
 @Getter
 @AllArgsConstructor
-public enum GoodsStatusEnum {
-    ON_SALE(10,"在售"),
-    SUSPEND_SALES(20,"下架"),
-    SALD_OUT(30,"售空"),
-    STOCK_OUT(40,"缺货"),
-    HALT_SALE(50,"停售"),
+public enum PromotionEnum {
+
+    ON_Promotion(1,"促销"),
+    UN_Promotion(0,"未促销"),
+
 
 
     ;
 
     private int code;
     private String value;
-
-
 
 
 }

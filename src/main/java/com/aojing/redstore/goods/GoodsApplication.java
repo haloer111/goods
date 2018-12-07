@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @MapperScan("com.aojing.redstore.goods.dao")
-//@EnableEurekaClient
+@EnableEurekaClient
 public class GoodsApplication {
     @Bean
     @LoadBalanced
