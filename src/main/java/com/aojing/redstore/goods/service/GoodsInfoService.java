@@ -1,6 +1,7 @@
 package com.aojing.redstore.goods.service;
 
 import com.aojing.redstore.goods.common.Result;
+import com.aojing.redstore.goods.dto.GoodsDto;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -23,11 +24,12 @@ public interface GoodsInfoService {
     //    Query[根据商品类型查询商品信息]
   //  Result Query();
 
-    //    Add[添加商品（新建商品）]
-  //  Result Add();
-
-    //    Updata[修改商品信息]
-  //  Result Updata();
+    /**
+     * 新增或修改商品
+     * @param goodsDto
+     * @return
+     */
+    public Result addOrUpdateNew(GoodsDto goodsDto);
 
     //    Delete[删除商品]
   //  Result Delete();

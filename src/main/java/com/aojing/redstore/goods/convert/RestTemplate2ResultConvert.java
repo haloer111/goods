@@ -1,6 +1,5 @@
 package com.aojing.redstore.goods.convert;
 
-import com.alipay.api.domain.OrderDetail;
 import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.exception.RedStoreException;
 import com.google.gson.Gson;

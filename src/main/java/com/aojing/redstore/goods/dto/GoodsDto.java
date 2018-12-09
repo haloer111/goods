@@ -16,6 +16,7 @@ import java.util.List;
 public class GoodsDto {
 
     private String id;
+    private String typeId;
 
     private String goodsCode;
 
@@ -53,12 +54,8 @@ public class GoodsDto {
 
     private String precondition;
 
-    private Date createTime;
-
-    private Date updateTime;
-
     private String detail;
 
-    private List<MultipartFile> imgFileList;
-    private List<MultipartFile> videoFileList;
+    private List<File> imgFileList;
+    private List<File> videoFileList;
 }

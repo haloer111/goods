@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class MediaOutPut {
+public class MediaOutput {
     private Integer id;
 
     private String entityId;
@@ -19,25 +19,12 @@ public class MediaOutPut {
 
     private String hotSellId;
 
+    private String nocount;
+    private Integer type;
     private String absolutePath;
 
-    private String relativePath;
 
-    private Integer type;
-
-    private String name;
-
-    private String nocount;
-
-    private String lllustrate;
-
-    private String leadingOfficical;
-
-    private String location;
-
-    private String remark;
-
-    private MultipartFile imgFile;
-    private MultipartFile videoFile;
+    private List<MultipartFile> imgFileList;
+    private List<MultipartFile> videoFileList;
 
 }

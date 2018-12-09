@@ -9,6 +9,7 @@ import lombok.Getter;
  * 0[0-9] 代表异常的大类
  * 00[00-99] 代表异常的微服务项目
  * 000[000-999] 代表具体异常码
+ *
  * @author gexiao
  * @date 2018/12/5 9:57
  */
@@ -28,7 +29,16 @@ public enum ExceptionEnum {
     LOGIN_FAIL(1101005, "登录失败, 登录信息不正确"),
 
     LOGOUT_SUCCESS(1101006, "登出成功"),
-    UPLOAD_FAIL(1101006,"上传失败"),
+
+    UPLOAD_FAIL(1101007, "上传失败"),
+
+    ADD_MEDIA_FAIL(1101008, "新增商品附件失败"),
+    ADD_GOODS_FAIL(1101009, "新增商品失败"),
+
+
+
+
+
     ;
 
     private Integer code;

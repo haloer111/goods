@@ -1,6 +1,7 @@
 package com.aojing.redstore.goods.service;
 
 import com.aojing.redstore.goods.common.Result;
+import com.aojing.redstore.goods.dto.GoodsDto;
 import com.aojing.redstore.goods.pojo.GoodsType;
 
 import java.util.Set;
@@ -16,7 +17,7 @@ public interface GoodsTypeService {
      * @param goodsType
      * @return
      */
-    Result addType(GoodsType goodsType);
+    Result addType(GoodsDto goodsDto);
 
     /**
      * 删除商品类目关系信息 根据商品id,类型id

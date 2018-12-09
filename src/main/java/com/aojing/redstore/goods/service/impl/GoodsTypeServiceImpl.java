@@ -5,9 +5,12 @@ import java.util.Date;
 import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.dao.GoodsInfoMapper;
 import com.aojing.redstore.goods.dao.GoodsTypeMapper;
+import com.aojing.redstore.goods.dto.GoodsDto;
+import com.aojing.redstore.goods.enums.CategoryStatusEnum;
 import com.aojing.redstore.goods.pojo.GoodsInfo;
 import com.aojing.redstore.goods.pojo.GoodsType;
 import com.aojing.redstore.goods.service.GoodsTypeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +28,14 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
     private GoodsInfoMapper goodsInfoMapper;
 
     @Override
-    public Result addType(GoodsType goodsType) {
+    public Result addType(GoodsDto goodsDto) {
+        GoodsType goodsType = new GoodsType();
+        BeanUtils.copyProperties(goodsDto,goodsType);
+        goodsType.setStatus(CategoryStatusEnum.ENABLE.getCode());
+        goodsType.setSortOrder(0);
+        goodsType.setCreateTime(new Date());
+        goodsType.setUpdateTime(new Date());
+
         if (goodsType == null) {
             return Result.createByErrorMessage("新增或更新商品类目参数不正确");
         }

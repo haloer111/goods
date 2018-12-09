@@ -3,7 +3,7 @@
 -- ----------------------------
 DROP TABLE IF EXISTS `goods_info_tb`;
 CREATE TABLE `goods_info_tb` (
-  `id` varchar(50)  not NULL COMMENT '商品表id',
+  `id` varchar(200)  not NULL COMMENT '商品表id',
   `goods_code` varchar(50)  not NULL COMMENT '商品编码',
   `price` decimal(20,2) NOT NULL COMMENT '商品价格',
   `cost_price` decimal(20,2)  NULL COMMENT '成本价',
@@ -37,7 +37,7 @@ COMMIT;
 DROP TABLE IF EXISTS `goods_set_menu_tb`;
 CREATE TABLE `goods_set_menu_tb` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id',
-  `good_set_id` varchar(50) not NULL COMMENT '商品套餐表id',
+  `good_set_id` varchar(200) not NULL COMMENT '商品套餐表id',
   `name` varchar(100) DEFAULT NULL COMMENT '套餐名字',
   `type_id` VARCHAR(50) DEFAULT NULL COMMENT '类型id',
   `instruction` varchar(500) DEFAULT NULL COMMENT '使用说明',
@@ -82,8 +82,8 @@ DROP TABLE IF EXISTS `goods_type_tb`;
 CREATE TABLE `goods_type_tb` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '类别Id',
   `type_id` VARCHAR(50)  DEFAULT NULL COMMENT '类目类型Id',
-  `goods_id` varchar(50) DEFAULT NULL COMMENT '商品id',
-  `menu_id` varchar(50) DEFAULT NULL COMMENT '商品套餐id',
+  `goods_id` varchar(200) DEFAULT NULL COMMENT '商品id',
+  `menu_id` varchar(200) DEFAULT NULL COMMENT '商品套餐id',
   `name` varchar(50) DEFAULT NULL COMMENT '类别名称',
   `status` int(10) DEFAULT '1' COMMENT '类别状态1-正常,2-已废弃',
   `seller_id` varchar(50) DEFAULT NULL COMMENT '卖家id',
@@ -93,6 +93,22 @@ CREATE TABLE `goods_type_tb` (
   PRIMARY KEY (`id`)
 ) COMMENT='商品类目表' ENGINE=InnoDB AUTO_INCREMENT=10032 DEFAULT CHARSET=utf8;
 COMMIT;
+-- ----------------------------
+--  Table structure for `goods_category_tb`
+-- ----------------------------
+DROP TABLE IF EXISTS `goods_category_tb`;
+CREATE TABLE `goods_category_tb` (
+  `id` VARCHAR(50)  not NULL COMMENT '类目Id',
+  `parent_id` varchar(200) DEFAULT NULL COMMENT '父节点id',
+  `name` varchar(50) DEFAULT NULL COMMENT '类别名称',
+  `status` int(10) DEFAULT '1' COMMENT '类别状态1-正常,2-已废弃',
+  `seller_id` varchar(50) DEFAULT NULL COMMENT '卖家id',
+  `sort_order` int(4) DEFAULT NULL COMMENT '排序编号,同类展示顺序,数值相等则自然排序',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) COMMENT='商品类目表' ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `goods_comment_info_tb`
@@ -101,8 +117,8 @@ DROP TABLE IF EXISTS `goods_comment_info_tb`;
 CREATE TABLE `goods_comment_info_tb` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '商品评论表Id',
   `commenter_id` varchar(50) DEFAULT NULL COMMENT '评论人id',
-  `goods_id` varchar(50) DEFAULT NULL COMMENT '商品id',
-  `menu_id` varchar(50) DEFAULT NULL COMMENT '商品套餐id',
+  `goods_id` varchar(200) DEFAULT NULL COMMENT '商品id',
+  `menu_id` varchar(200) DEFAULT NULL COMMENT '商品套餐id',
   `content` varchar(500) DEFAULT NULL COMMENT '内容',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -117,8 +133,8 @@ DROP TABLE IF EXISTS `goods_recomend_tb`;
 CREATE TABLE `goods_recomend_tb` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '推荐商品信息表Id',
   `seller_id` varchar(50) DEFAULT NULL COMMENT '卖家id',
-  `goods_id` varchar(50) DEFAULT NULL COMMENT '商品id',
-  `menu_id` varchar(50) DEFAULT NULL COMMENT '商品套餐id',
+  `goods_id` varchar(200) DEFAULT NULL COMMENT '商品id',
+  `menu_id` varchar(200) DEFAULT NULL COMMENT '商品套餐id',
   `recomender` varchar(50) DEFAULT NULL COMMENT '推荐人',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -133,8 +149,8 @@ DROP TABLE IF EXISTS `goods_like_info_tb`;
 CREATE TABLE `goods_like_info_tb` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '点赞信息表Id',
   `liker_id` varchar(50) DEFAULT NULL COMMENT '点赞人id',
-  `goods_id` varchar(50) DEFAULT NULL COMMENT '商品id',
-  `menu_id` varchar(50) DEFAULT NULL COMMENT '商品套餐id',
+  `goods_id` varchar(200) DEFAULT NULL COMMENT '商品id',
+  `menu_id` varchar(200) DEFAULT NULL COMMENT '商品套餐id',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -146,8 +162,8 @@ COMMIT;
 DROP TABLE IF EXISTS `goods_examine_info_tb`;
 CREATE TABLE `goods_examine_info_tb` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '商品审核信息表Id',
-  `goods_id` varchar(50) DEFAULT NULL COMMENT '商品id',
-  `menu_id` varchar(50) DEFAULT NULL COMMENT '商品套餐id',
+  `goods_id` varchar(200) DEFAULT NULL COMMENT '商品id',
+  `menu_id` varchar(200) DEFAULT NULL COMMENT '商品套餐id',
   `examine_result` int(10) NULL COMMENT '审核信息',
   `examine_time` datetime DEFAULT NULL COMMENT '审核时间',   
   `examiner` varchar(50) DEFAULT NULL COMMENT '审核人',
@@ -164,11 +180,11 @@ DROP TABLE IF EXISTS `media_info_tb`;
 CREATE TABLE `media_info_tb` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '媒体信息表Id',
   `entity_id` varchar(50) DEFAULT NULL  COMMENT '卖家/门户Id',
-  `goods_id` varchar(50) DEFAULT NULL COMMENT '商品id',
-  `menu_id` varchar(50) DEFAULT NULL COMMENT '商品套餐id',
-  `hot_sell_id` varchar(50) DEFAULT NULL COMMENT '商品热销id',
-  `absolute_path` varchar(500) DEFAULT NULL COMMENT '文件绝对路径',
-  `relative_path` varchar(500) DEFAULT NULL COMMENT '文件相对路径',
+  `goods_id` varchar(200) DEFAULT NULL COMMENT '商品id',
+  `menu_id` varchar(200) DEFAULT NULL COMMENT '商品套餐id',
+  `hot_sell_id` varchar(200) DEFAULT NULL COMMENT '商品热销id',
+  `absolute_path` varchar(200) DEFAULT NULL COMMENT '文件绝对路径',
+  `relative_path` varchar(200) DEFAULT NULL COMMENT '文件相对路径',
   `type` int(10) DEFAULT NULL COMMENT '文件类型,10-图片,20-视频',
   `name` varchar(100) DEFAULT NULL COMMENT '文件名',
   -- 不清楚
@@ -193,9 +209,9 @@ COMMIT;
 DROP TABLE IF EXISTS `goods_hot_sell_tb`;
 CREATE TABLE `goods_hot_sell_tb` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Id',
-  `hot_sell_id` varchar(50) DEFAULT NULL COMMENT '商品热销id',
-  `goods_id` varchar(50) DEFAULT NULL COMMENT '商品id',
-  `menu_id` varchar(50) DEFAULT NULL COMMENT '商品套餐id',
+  `hot_sell_id` varchar(200) DEFAULT NULL COMMENT '商品热销id',
+  `goods_id` varchar(200) DEFAULT NULL COMMENT '商品id',
+  `menu_id` varchar(200) DEFAULT NULL COMMENT '商品套餐id',
   `hot_set_desc` int(10) NULL COMMENT '描述',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
