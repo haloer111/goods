@@ -11,5 +11,5 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public interface GoodsExamineInfoService {
     //    Examine[审核商品信息]
-   // Result Examine();
+    Result examine(GoodsExamineInfo examineInfo);
 }

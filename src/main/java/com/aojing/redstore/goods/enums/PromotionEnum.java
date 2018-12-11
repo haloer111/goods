@@ -11,8 +11,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PromotionEnum {
 
-    ON_Promotion(1,"促销"),
-    UN_Promotion(0,"未促销"),
+    ON_PROMOTION(1,"促销"),
+    UN_PROMOTION(0,"未促销"),
 
 
 

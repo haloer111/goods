@@ -20,17 +20,22 @@ public class Result<T>  implements Serializable {
     private Result(int status, T data){
         this.status = status;
         this.data = data;
+        this.key = null;
     }
 
     private Result(int status, String msg, T data){
         this.status = status;
         this.msg = msg;
         this.data = data;
+        this.key = null;
+
     }
 
     private Result(int status, String msg){
         this.status = status;
         this.msg = msg;
+        this.key = null;
+
     }
 
     public Result(String key, int status, String msg, T data) {

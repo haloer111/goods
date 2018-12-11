@@ -34,6 +34,8 @@ public enum ExceptionEnum {
 
     ADD_MEDIA_FAIL(1101008, "新增商品附件失败"),
     ADD_GOODS_FAIL(1101009, "新增商品失败"),
+    UPDATE_GOODS_FAIL(1101010, "更新商品失败"),
+    DELETE_GOODS_FAIL(1101011, "删除商品失败"),
 
 
 

@@ -22,8 +22,8 @@ public class GoodsLikeInfoServiceImpl implements GoodsLikeInfoService {
     @Autowired
     GoodsLikeInfoMapper goodsLikeInfoMapper;
 
-    //    GiveLike[点赞]
-    Result GiveLike(String likerId, String goodsId) {
+    //    giveLike[点赞]
+    public Result giveLike(String likerId, String goodsId) {
 
         if (StringUtils.isNotBlank(goodsId) && StringUtils.isNotBlank(likerId)) {
             return Result.createByErrorMessage("点赞,参数不正确");

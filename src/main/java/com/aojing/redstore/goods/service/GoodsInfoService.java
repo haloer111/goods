@@ -2,6 +2,7 @@ package com.aojing.redstore.goods.service;
 
 import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.dto.GoodsDto;
+import com.aojing.redstore.goods.pojo.GoodsInfo;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -21,15 +22,20 @@ public interface GoodsInfoService {
   //  Result UploadMovie();
     Result UploadMovie(MultipartFile file, String path);
 
-    //    Query[根据商品类型查询商品信息]
-  //  Result Query();
-
+    /**
+     * 有选择性的查询
+     * @param goodsInfo
+     * @return
+     */
+    Result queryBySelective(GoodsInfo goodsInfo);
     /**
      * 新增或修改商品
      * @param goodsDto
      * @return
      */
-    public Result addOrUpdateNew(GoodsDto goodsDto);
+    public Result updateGoods(GoodsDto goodsDto);
+
+    public Result addGoods(GoodsDto goodsDto);
 
     //    Delete[删除商品]
   //  Result Delete();
@@ -39,22 +45,21 @@ public interface GoodsInfoService {
 
     //    DelPicture[删除商品图片]
   //  Result DelPicture();
-    public Result delMovie(String fileName, String mediaInfoId);
 
-    //    delMovie[删除商品宣传短视频]
-  //  Result delMovie();
+    //    delFile[删除商品宣传短视频]
+  //  Result delFile();
 
     //    ChangeStatus[修改商品状态]
   //  Result ChangeStatus();
 
-    //    GiveLike[点赞]
-   // Result GiveLike();
+    //    giveLike[点赞]
+   // Result giveLike();
 
-    //    Comment[评论商品]
-  //  Result Comment();
+    //    comment[评论商品]
+  //  Result comment();
 
-    //    Discomment[退回评论]
-  //  Result Discomment();
+    //    discomment[退回评论]
+  //  Result discomment();
 
     //    Examine[审核商品信息]
   //  Result Examine();

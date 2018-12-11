@@ -1,13 +1,16 @@
 package com.aojing.redstore.goods.service;
 
+import com.aojing.redstore.goods.common.Result;
+import com.aojing.redstore.goods.pojo.GoodsComentInfo;
+
 /**
  * @author gexiao
  * @date 2018/12/6 10:41
  */
 public interface GoodsComentInfoService {
-    //    Comment[评论商品]
-   // Result Comment(){};
+    //    comment[评论商品]
+    Result comment(GoodsComentInfo comentInfo);
 
-    //    Discomment[退回评论]
-   // Result Discomment(){};
+    //    discomment[退回评论]
+    Result discomment(Integer id, String commenterId);
 }

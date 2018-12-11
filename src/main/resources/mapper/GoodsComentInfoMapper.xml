@@ -23,6 +23,11 @@
     delete from goods_comment_info_tb
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByIdAndUserId" parameterType="java.lang.Integer" >
+    delete from goods_comment_info_tb
+    where id = #{id,jdbcType=INTEGER}
+     and commenter_id =#{commenterId}
+  </delete>
   <insert id="insert" parameterType="com.aojing.redstore.goods.pojo.GoodsComentInfo" >
     insert into goods_comment_info_tb (id, commenter_id, goods_id, 
       menu_id, content, create_time, 

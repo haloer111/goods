@@ -18,16 +18,16 @@ public class GoodsExamineInfoServiceImpl implements GoodsExamineInfoService {
     private GoodsExamineInfoMapper examineInfoMapper;
 
     //    Examine[审核商品信息]
-    Result Examine(GoodsExamineInfo examineInfo) {
+    public Result examine(GoodsExamineInfo examineInfo) {
         if (examineInfo == null) {
             return Result.createByErrorMessage("审核商品信息,参数不正确");
         }
         int result = examineInfoMapper.insertSelective(examineInfo);
 
         if (result > 0) {
-            return Result.createBySuccess("删除商品类目成功");
+            return Result.createBySuccess("审核商品信息成功");
         }
-        return Result.createByErrorMessage("删除商品类目失败");
+        return Result.createByErrorMessage("审核商品信息失败");
 
     }
 }

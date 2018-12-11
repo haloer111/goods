@@ -10,7 +10,6 @@ import com.aojing.redstore.goods.enums.ExceptionEnum;
 import com.aojing.redstore.goods.enums.GoodsStatusEnum;
 import com.aojing.redstore.goods.enums.PromotionEnum;
 import com.aojing.redstore.goods.exception.RedStoreException;
-import com.aojing.redstore.goods.output.MediaOutput;
 import com.aojing.redstore.goods.pojo.GoodsInfo;
 import com.aojing.redstore.goods.service.GoodsInfoService;
 import com.aojing.redstore.goods.util.KeyUtil;
@@ -18,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -57,38 +57,8 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         return Result.createBySuccess();
     }
 
-    //    delMovie[删除商品宣传短视频]  DelPicture[删除商品图片]
-    public Result delMovie(String fileName, String mediaId) {
-        if (StringUtils.isBlank(fileName) && StringUtils.isBlank(mediaId)) {
-            return Result.createByErrorMessage("商品删除文件,参数错误");
-        }
-        try {
-            //getForObject,请求参数的用法
-            //ResponseEntity<String> responseEntity = restTemplate.getForEntity
-            // ("http://HELLO-SERVICE/sayhello?name={1}", String.class, "张三");
-//            ResponseEntity<String> responseEntity = restTemplate.getForEntity
-//            ("http://HELLO-SERVICE/sayhello?name={name}", String.class, map);
-
-            //根据主键查询附件表.得到文件名
-            String data = restTemplate.getForObject("http://MEDIA/media/query?id={1}", String.class, "1");
-            Result convertResult = RestTemplate2ResultConvert.convert(data);
-            String fileName2 = (String) convertResult.getData();
-            // log.info("==============data:{}",result.getData());
-            //根据文件名来删除
-            String delResult = restTemplate.getForObject("http://MEDIA/media/delete?mediaId={1}", String.class,
-                    fileName2);
-
-            return Result.createBySuccess(RestTemplate2ResultConvert.convert(delResult).getData());
-
-        } catch (RestClientException e) {
-            //做处理
-            throw new RedStoreException(-1, "未找到数据");
-        }
-    }
-
-
     //    Query[根据商品类型查询商品信息]
-    Result Query(GoodsInfo goodsInfo) {
+    public Result queryBySelective(GoodsInfo goodsInfo) {
         if (goodsInfo == null) {
             return Result.createByErrorMessage("查询商品,参数不正确");
         }
@@ -178,7 +148,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
 
-   public Result addOrUpdateNew(GoodsDto goodsDto) {
+    public Result updateGoods(GoodsDto goodsDto) {
         if (goodsDto != null) {
             GoodsInfo goods = new GoodsInfo();
             if (goodsDto.getId() != null) {
@@ -190,27 +160,32 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
                     return Result.createBySuccess("更新商品成功");
                 }
                 return Result.createBySuccess("更新商品失败");
-            } else {
-                // 新增
-                // 1. uuid生成goodsid,
-                String goodsId = KeyUtil.get32UUID();
-                String goodscode = KeyUtil.getGoodCode();
-
-                BeanUtils.copyProperties(goodsDto, goods);
-                goods.setId(goodsId);
-                goods.setGoodsCode(goodscode);
-                goods.setSalesPromotion(PromotionEnum.UN_Promotion.getCode());
-                goods.setSellStatus(GoodsStatusEnum.ON_SALE.getCode());
-                goods.setCreateTime(new Date());
-                goods.setUpdateTime(new Date());
-                goods.setPrice(new BigDecimal("0"));
-
-                int rowCount = goodsInfoMapper.insert(goods);
-                if (rowCount > 0) {
-                    return Result.createBySuccess("新增商品成功");
-                }
-                return Result.createBySuccess("新增商品失败");
             }
+        }
+        return Result.createByErrorMessage("新增或更新商品参数不正确");
+
+    }
+
+    public Result addGoods(GoodsDto goodsDto) {
+        if (goodsDto != null) {
+            GoodsInfo goods = new GoodsInfo();
+            // 新增
+            // 1. uuid生成goodsid,
+            String goodscode = KeyUtil.getGoodCode();
+
+            BeanUtils.copyProperties(goodsDto, goods);
+            goods.setGoodsCode(goodscode);
+            goods.setSalesPromotion(PromotionEnum.UN_PROMOTION.getCode());
+            goods.setSellStatus(GoodsStatusEnum.ON_SALE.getCode());
+            goods.setCreateTime(new Date());
+            goods.setUpdateTime(new Date());
+            goods.setPrice(new BigDecimal("0"));
+
+            int rowCount = goodsInfoMapper.insert(goods);
+            if (rowCount > 0) {
+                return Result.createBySuccess("新增商品成功");
+            }
+            return Result.createBySuccess("新增商品失败");
         }
         return Result.createByErrorMessage("新增或更新商品参数不正确");
 

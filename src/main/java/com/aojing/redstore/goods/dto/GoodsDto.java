@@ -56,6 +56,6 @@ public class GoodsDto {
 
     private String detail;
 
-    private List<File> imgFileList;
-    private List<File> videoFileList;
+    private List<MultipartFile> imgFileList;
+    private List<MultipartFile> videoFileList;
 }

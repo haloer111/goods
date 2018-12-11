@@ -1,10 +1,12 @@
 package com.aojing.redstore.goods.service;
 
+import com.aojing.redstore.goods.common.Result;
+
 /**
  * @author gexiao
  * @date 2018/12/6 10:21
  */
 public interface GoodsLikeInfoService {
-    //    GiveLike[点赞]
-    //Result GiveLike(){};
+    //    giveLike[点赞]
+    Result giveLike(String likerId, String goodsId);
 }

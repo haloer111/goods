@@ -1,12 +1,11 @@
 package com.aojing.redstore.goods.output;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.util.Date;
-import java.util.List;
-
+/**
+ * @author gexiao
+ * @date 2018/12/11 10:36
+ */
 @Data
 public class MediaOutput {
     private Integer id;
@@ -22,9 +21,4 @@ public class MediaOutput {
     private String nocount;
     private Integer type;
     private String absolutePath;
-
-
-    private List<MultipartFile> imgFileList;
-    private List<MultipartFile> videoFileList;
-
 }

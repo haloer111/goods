@@ -17,8 +17,8 @@ public class GoodsComentInfoServiceImpl implements GoodsComentInfoService {
     @Autowired
     private GoodsComentInfoMapper goodsComentInfoMapper;
 
-    //    Comment[评论商品]
-    Result Comment(GoodsComentInfo comentInfo) {
+    //    comment[评论商品]
+    public Result comment(GoodsComentInfo comentInfo) {
         if (comentInfo == null) {
             return Result.createByErrorMessage("评论商品,参数不正确");
         }
@@ -32,13 +32,13 @@ public class GoodsComentInfoServiceImpl implements GoodsComentInfoService {
     }
 
 
-    //    Discomment[退回评论]
-    Result Discomment(Integer id) {
-        if (id == null ) {
+    //    discomment[退回评论]
+    public Result discomment(Integer id, String commenterId) {
+        if (id == null) {
             return Result.createByErrorMessage("退回评论,参数不正确");
         }
 
-        int result = goodsComentInfoMapper.deleteByPrimaryKey(id);
+        int result = goodsComentInfoMapper.deleteByIdAndUserId(id,commenterId);
         if (result > 0) {
             return Result.createBySuccessMessage("评论商品,成功");
         }
