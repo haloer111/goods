@@ -150,4 +150,13 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+
+  <!--manual-->
+  <select id="queryGoodsIdByTypeId" parameterType="string" resultType="string">
+    select goods_id
+    from goods_type_tb
+    where type_id = #{categoryId}
+  </select>
 </mapper>

@@ -18,5 +18,12 @@ public interface GoodsLikeInfoMapper {
 
     int updateByPrimaryKey(GoodsLikeInfo record);
 
+
+
+
+    //manual
     List<GoodsLikeInfo> queryByLikerIdOrGoodsId(String likerId, String goodsId);
+
+    Integer queryLikeInfoCount(String goodsId);
+
 }

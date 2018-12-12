@@ -3,10 +3,8 @@ package com.aojing.redstore.goods.service.impl;
 import java.util.Date;
 
 import com.aojing.redstore.goods.common.Result;
-import com.aojing.redstore.goods.convert.RestTemplate2ResultConvert;
 import com.aojing.redstore.goods.dao.GoodsInfoMapper;
 import com.aojing.redstore.goods.dto.GoodsDto;
-import com.aojing.redstore.goods.enums.ExceptionEnum;
 import com.aojing.redstore.goods.enums.GoodsStatusEnum;
 import com.aojing.redstore.goods.enums.PromotionEnum;
 import com.aojing.redstore.goods.exception.RedStoreException;
@@ -14,10 +12,8 @@ import com.aojing.redstore.goods.pojo.GoodsInfo;
 import com.aojing.redstore.goods.service.GoodsInfoService;
 import com.aojing.redstore.goods.util.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -58,7 +54,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
     //    Query[根据商品类型查询商品信息]
-    public Result queryBySelective(GoodsInfo goodsInfo) {
+    public Result<List<GoodsInfo>> queryBySelective(GoodsInfo goodsInfo) {
         if (goodsInfo == null) {
             return Result.createByErrorMessage("查询商品,参数不正确");
         }

@@ -1,7 +1,6 @@
 #dev env
 ftp:
-  server:
-  ip: 182.92.82.103
+  server_ip: 192.168.2.18
   user: root
-ftp.pass=root
-ftp.server.http.prefix=http://img.redstore.com/
+  pass: root
+  server_http_prefix: http://img.redstore.com/

@@ -1,5 +1,6 @@
 package com.aojing.redstore.goods.dto;
 
+import com.aojing.redstore.goods.form.FileTypeForm;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,7 +56,7 @@ public class GoodsDto {
     private String precondition;
 
     private String detail;
-
-    private List<MultipartFile> imgFileList;
-    private List<MultipartFile> videoFileList;
+//    private List<MultipartFile> imgFileList;
+//    private List<MultipartFile> videoFileList;
+    private List<FileTypeForm> fileTypeFormList;
 }

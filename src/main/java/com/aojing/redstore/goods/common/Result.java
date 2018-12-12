@@ -14,6 +14,9 @@ public class Result<T>  implements Serializable {
     private String msg;
     private T data;
 
+    public Result() {
+    }
+
     private Result(int status){
         this.status = status;
     }

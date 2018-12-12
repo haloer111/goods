@@ -4,6 +4,7 @@ import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.dto.GoodsDto;
 import com.aojing.redstore.goods.pojo.GoodsType;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -53,5 +54,12 @@ public interface GoodsTypeService {
      */
     public Result updateType(GoodsType goodsType);
 
+
+    /**
+     * 查询商品id根据类目id
+     * @param categoryId 类目id
+     * @return
+     */
+    public Result<List<String>> queryGoodsIdByTypeId(String categoryId);
 
 }

@@ -7,8 +7,8 @@ import com.aojing.redstore.goods.service.GoodsLikeInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -53,4 +53,14 @@ public class GoodsLikeInfoServiceImpl implements GoodsLikeInfoService {
         }
         return Result.createByErrorMessage("查询,失败");
     }
+
+    public Result<Integer> queryLikeInfoCount(String goodsId) {
+        if (StringUtils.isBlank(goodsId)) {
+            return Result.createByErrorMessage("查询,参数不正确");
+        }
+        Integer count = goodsLikeInfoMapper.queryLikeInfoCount(goodsId);
+        return Result.createBySuccess(count);
+    }
+
+
 }

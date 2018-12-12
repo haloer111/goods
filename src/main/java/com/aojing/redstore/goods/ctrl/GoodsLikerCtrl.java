@@ -21,4 +21,9 @@ public class GoodsLikerCtrl {
 
         return goodsLikeInfoService.giveLike(likerId, goodsId);
     }
+
+    @GetMapping("/count")
+    public Result<Integer> count(String goodsId) {
+        return goodsLikeInfoService.queryLikeInfoCount(goodsId);
+    }
 }

@@ -104,6 +104,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+
+
+
+
+
+  <!--manual-->
   <select id="queryByLikerIdOrGoodsId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
@@ -117,4 +123,14 @@
       </if>
     </where>
   </select>
+  <select id="queryLikeInfoCount" resultType="int" parameterType="string" >
+    select
+    count(1)
+    from goods_like_info_tb
+    where
+         goods_id = #{goodsId}
+  </select>
+
+
+
 </mapper>

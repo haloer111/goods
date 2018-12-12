@@ -13,7 +13,9 @@ import com.aojing.redstore.goods.service.GoodsTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,7 +32,7 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
     @Override
     public Result addType(GoodsDto goodsDto) {
         GoodsType goodsType = new GoodsType();
-        BeanUtils.copyProperties(goodsDto,goodsType);
+        BeanUtils.copyProperties(goodsDto, goodsType);
         goodsType.setStatus(CategoryStatusEnum.ENABLE.getCode());
         goodsType.setSortOrder(0);
         goodsType.setCreateTime(new Date());
@@ -75,7 +77,16 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
         return Result.createByErrorMessage("删除商品类目失败");
     }
 
-
+    public Result<List<String>> queryGoodsIdByTypeId(String categoryId) {
+        if (categoryId == null) {
+            return Result.createByErrorMessage("查询参数不正确");
+        }
+        List<String> goodsIdList = goodsTypeMapper.queryGoodsIdByTypeId(categoryId);
+        if (!CollectionUtils.isEmpty(goodsIdList)) {
+            return Result.createBySuccess(goodsIdList);
+        }
+        return Result.createByErrorMessage("删除商品类目失败");
+    }
 
 
 }

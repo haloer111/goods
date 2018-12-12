@@ -5,6 +5,8 @@ import com.aojing.redstore.goods.dto.GoodsDto;
 import com.aojing.redstore.goods.pojo.GoodsInfo;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * 商品信息
  *
@@ -27,7 +29,7 @@ public interface GoodsInfoService {
      * @param goodsInfo
      * @return
      */
-    Result queryBySelective(GoodsInfo goodsInfo);
+    Result<List<GoodsInfo>> queryBySelective(GoodsInfo goodsInfo);
     /**
      * 新增或修改商品
      * @param goodsDto
