@@ -131,6 +131,20 @@
          goods_id = #{goodsId}
   </select>
 
+<select id="queryLikeInfoCountList" resultType="map" >
+  SELECT
+    goods_id as goodsId,
+    count( 1 ) as likeCount
+  FROM
+    `goods_like_info_tb`
+  WHERE
+    goods_id IN
+  <foreach collection="goodsIdList" item="goodsId" open="(" close=")" separator=",">
+    #{goodsId}
+  </foreach>
+  GROUP BY
+    goods_id;
 
+</select>
 
 </mapper>

@@ -46,6 +46,8 @@ public class GoodsInfo {
 
     private Date updateTime;
 
+    private String storeName;
+
     private String detail;
 
     public String getId() {
@@ -214,6 +216,14 @@ public class GoodsInfo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName == null ? null : storeName.trim();
     }
 
     public String getDetail() {

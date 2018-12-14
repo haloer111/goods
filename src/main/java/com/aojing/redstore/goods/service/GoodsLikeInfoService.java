@@ -3,6 +3,7 @@ package com.aojing.redstore.goods.service;
 import com.aojing.redstore.goods.common.Result;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author gexiao
@@ -11,6 +12,7 @@ import java.util.List;
 public interface GoodsLikeInfoService {
     /**
      * 点赞
+     *
      * @param likerId 点赞人id
      * @param goodsId 商品id
      * @return
@@ -19,9 +21,11 @@ public interface GoodsLikeInfoService {
 
     /**
      * 根据商品id查询点赞数
+     *
      * @param goodsId 商品id
      * @return
      */
-    Result<Integer> queryLikeInfoCount( String goodsId);
+    Result<Integer> queryLikeInfoCount(String goodsId);
 
+    Result<List<Map<String, Object>>> queryLikeInfoCount(List<String> goodsIdList);
 }

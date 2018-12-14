@@ -39,6 +39,8 @@ public interface GoodsInfoService {
 
     public Result addGoods(GoodsDto goodsDto);
 
+    Result<List<GoodsInfo>> queryByIdList(List<String> data);
+
     //    Delete[删除商品]
   //  Result Delete();
 

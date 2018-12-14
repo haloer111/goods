@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * @author gexiao
  * @date 2018/12/12 15:16
@@ -13,7 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoodsCategoryVo {
+public class GoodsCategoryVo implements Serializable {
 
     private String id;
     private String name;

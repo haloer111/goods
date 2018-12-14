@@ -2,9 +2,11 @@ package com.aojing.redstore.goods.mservice;
 
 import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.dto.GoodsDto;
+import com.aojing.redstore.goods.vo.GoodsSearchVo;
 import com.github.pagehelper.PageInfo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author gexiao
@@ -17,4 +19,6 @@ public interface GoodsMService {
     public Result delFile(Integer mediaId, String userId);
 
     Result<PageInfo> queryGoodsList(String categoryId, int pageNum, int pageSize);
+
+    Result<List<GoodsSearchVo>> serachBykeyword(String keyword);
 }

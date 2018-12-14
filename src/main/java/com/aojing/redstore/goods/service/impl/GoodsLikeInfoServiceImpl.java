@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author gexiao
@@ -60,6 +61,12 @@ public class GoodsLikeInfoServiceImpl implements GoodsLikeInfoService {
         }
         Integer count = goodsLikeInfoMapper.queryLikeInfoCount(goodsId);
         return Result.createBySuccess(count);
+    }
+
+    @Override
+    public Result<List<Map<String, Object>>> queryLikeInfoCount(List<String> goodsIdList) {
+        List<Map<String, Object>> countList = goodsLikeInfoMapper.queryLikeInfoCountList(goodsIdList);
+        return Result.createBySuccess(countList);
     }
 
 

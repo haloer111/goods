@@ -1,7 +1,10 @@
 package com.aojing.redstore.goods.pojo;
 
+import lombok.ToString;
+
 import java.util.Date;
 
+@ToString
 public class GoodsCategory {
     private String id;
 

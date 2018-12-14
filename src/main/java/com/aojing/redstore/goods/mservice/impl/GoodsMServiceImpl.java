@@ -1,6 +1,7 @@
 package com.aojing.redstore.goods.mservice.impl;
 
 import com.aojing.redstore.goods.convert.RestTemplate2ResultConvert;
+import com.aojing.redstore.goods.dao.GoodsInfoMapper;
 import com.aojing.redstore.goods.enums.ExceptionEnum;
 import com.aojing.redstore.goods.enums.FileTypeEnum;
 import com.aojing.redstore.goods.exception.RedStoreException;
@@ -16,6 +17,7 @@ import com.aojing.redstore.goods.service.GoodsLikeInfoService;
 import com.aojing.redstore.goods.service.GoodsTypeService;
 import com.aojing.redstore.goods.util.KeyUtil;
 import com.aojing.redstore.goods.vo.GoodsInfoVo;
+import com.aojing.redstore.goods.vo.GoodsSearchVo;
 import com.aojing.redstore.goods.vo.ImgVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -39,6 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author gexiao
@@ -57,6 +60,9 @@ public class GoodsMServiceImpl implements GoodsMService {
     GoodsTypeService goodsTypeService;
     @Autowired
     GoodsLikeInfoService goodsLikeInfoService;
+
+    @Autowired
+    GoodsInfoMapper goodsInfoMapper;
 
     @Override
     public Result addOrUpdateGoods(GoodsDto goodsDto, HttpServletRequest request) {
@@ -200,6 +206,7 @@ public class GoodsMServiceImpl implements GoodsMService {
 
     @Override
     public Result<PageInfo> queryGoodsList(String categoryId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<GoodsInfoVo> goodsInfoVoList = new ArrayList<>();
         //1.查询商品类目关系表
         Result<List<String>> goodsIdList = goodsTypeService.queryGoodsIdByTypeId(categoryId);
@@ -214,45 +221,50 @@ public class GoodsMServiceImpl implements GoodsMService {
         if (!addResult.isSuccess()) {
             throw new RedStoreException(ExceptionEnum.ADD_MEDIA_FAIL);
         }
-        List<ImgVo> imgVoList =  addResult.getData();
 
+        //点赞数的查询
+        Result<List<Map<String, Object>>> likeCountList =
+                goodsLikeInfoService.queryLikeInfoCount(goodsIdList.getData());
+        //商品查询
+        List<GoodsInfo> goodsList = goodsInfoService.queryByIdList(goodsIdList.getData()).getData();
         //组装id,bgimg
+        List<ImgVo> imgVoList = addResult.getData();
         for (Object obj : imgVoList) {
             Map map1 = (Map) obj;
             GoodsInfoVo goodsInfoVo = new GoodsInfoVo();
             goodsInfoVo.Map2GoodsInfo(map1);
-           /* String goodsId= (String) map1.get("goodsId");
-            String bgImg= (String) map1.get("absolutePath");
-            //BeanUtils.copyProperties(imgVo, goodsInfoVo);
-            goodsInfoVo.setGoodsId(goodsId);
-            goodsInfoVo.setBgImg(bgImg);*/
             goodsInfoVoList.add(goodsInfoVo);
-        }
-
-        GoodsInfo goodsInfo;
-        //组装点赞数
-        for (GoodsInfoVo goodsInfoVo : goodsInfoVoList) {
-            String goodsId = goodsInfoVo.getGoodsId();
-            goodsInfoVo.setLikeCount(goodsLikeInfoService.queryLikeInfoCount(goodsId).getData());
-            goodsInfo = new GoodsInfo();
-            goodsInfo.setId(goodsId);
-            List<GoodsInfo> listResult = goodsInfoService.queryBySelective(goodsInfo).getData();
-            //组装商品名,内容,用户id
-            for (GoodsInfo item : listResult) {
-                if (goodsId.endsWith(item.getId())) {
-                    goodsInfoVo.setGoodsName(item.getName());
-                    //不清楚用那个字段
-                    goodsInfoVo.setContent(item.getDetail());
-                    goodsInfoVo.setUserId(item.getSeller());
+            //组装点赞数
+            for (Map<String, Object> item : likeCountList.getData()) {
+                if (goodsInfoVo.getGoodsId().equals(item.get("goodsId"))) {
+                    goodsInfoVo.setLikeCount(Integer.parseInt(String.valueOf(item.get("likeCount"))));
                 }
             }
-            //todo 已有卖家id,可以查询 icon,username
+            //组装商品名,内容,用户id
+            for (GoodsInfo goods : goodsList) {
+                if (goodsInfoVo.getGoodsId().equals(goods.getId())) {
+                    goodsInfoVo.setGoodsName(goods.getName());
+                    //不清楚用那个字段
+                    goodsInfoVo.setContent(goods.getDetail());
+                    goodsInfoVo.setUserId(goods.getSeller());
+                }
+            }
+            //todo 根据卖家id查询 icon,username
         }
-        PageHelper.startPage(pageNum, pageSize);
-        PageInfo pageInfo = new PageInfo(goodsInfoVoList);
+        PageInfo pageInfo = new PageInfo(goodsIdList.getData());
         pageInfo.setList(goodsInfoVoList);
 
         return Result.createBySuccess(pageInfo);
+    }
+
+    @Override
+    public Result<List<GoodsSearchVo>> serachBykeyword(String keyword) {
+        keyword = new StringBuilder().append("%").append(keyword).append("%").toString();
+        List<GoodsInfo> goodsInfoList = goodsInfoMapper.serachBykeyword(keyword);
+        List<GoodsSearchVo> searchVoList = goodsInfoList.stream().map(e -> new GoodsSearchVo(e.getId(), e.getName(),
+                e.getStoreName())).collect(Collectors.toList());
+        //todo 商家图片无法处理
+        return Result.createBySuccess(searchVoList);
     }
 
 

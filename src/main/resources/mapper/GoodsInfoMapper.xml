@@ -23,6 +23,7 @@
     <result column="precondition" property="precondition" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="store_Name" property="storeName" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.aojing.redstore.goods.pojo.GoodsInfo" extends="BaseResultMap" >
     <result column="detail" property="detail" jdbcType="LONGVARCHAR" />
@@ -30,7 +31,7 @@
   <sql id="Base_Column_List" >
     id, goods_code, price, cost_price, sales_promotion, seller, site, brand, name, sell_number, 
     sell_status, goods_desc, tips, unit, instruction, start_time, end_time, value, precondition, 
-    create_time, update_time
+    create_time, update_time, store_Name
   </sql>
   <sql id="Blob_Column_List" >
     detail
@@ -43,83 +44,6 @@
     from goods_info_tb
     where id = #{id,jdbcType=VARCHAR}
   </select>
-
-  <select id="queryByGoodsInfo" resultMap="ResultMapWithBLOBs" parameterType="com.aojing.redstore.goods.pojo.GoodsInfo" >
-    select
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from goods_info_tb
-    <where>
-      <if test="id != null" >
-      and  id = #{id}
-      </if>
-      <if test="goodsCode != null" >
-      and  goods_code = #{goodsCode,jdbcType=VARCHAR}
-      </if>
-      <if test="price != null" >
-        and  price = #{price,jdbcType=DECIMAL}
-      </if>
-      <if test="costPrice != null" >
-        and   cost_price = #{costPrice,jdbcType=DECIMAL}
-      </if>
-      <if test="salesPromotion != null" >
-        and sales_promotion = #{salesPromotion,jdbcType=INTEGER}
-      </if>
-      <if test="seller != null" >
-        and  seller = #{seller,jdbcType=VARCHAR}
-      </if>
-      <if test="site != null" >
-        and  site = #{site,jdbcType=VARCHAR}
-      </if>
-      <if test="brand != null" >
-        and brand = #{brand,jdbcType=VARCHAR}
-      </if>
-      <if test="name != null" >
-        and  name = #{name,jdbcType=VARCHAR}
-      </if>
-      <if test="sellNumber != null" >
-        and  sell_number = #{sellNumber,jdbcType=VARCHAR}
-      </if>
-      <if test="sellStatus != null" >
-        and  sell_status = #{sellStatus,jdbcType=INTEGER}
-      </if>
-      <if test="goodsDesc != null" >
-        and  goods_desc = #{goodsDesc,jdbcType=VARCHAR}
-      </if>
-      <if test="tips != null" >
-        and tips = #{tips,jdbcType=VARCHAR}
-      </if>
-      <if test="unit != null" >
-        and unit = #{unit,jdbcType=VARCHAR}
-      </if>
-      <if test="instruction != null" >
-        and instruction = #{instruction,jdbcType=VARCHAR}
-      </if>
-      <if test="startTime != null" >
-        and start_time = #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null" >
-        and end_time = #{endTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="value != null" >
-        and value = #{value,jdbcType=VARCHAR}
-      </if>
-      <if test="precondition != null" >
-        and precondition = #{precondition,jdbcType=VARCHAR}
-      </if>
-      <if test="createTime != null" >
-        and create_time = #{createTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="updateTime != null" >
-        and  update_time = #{updateTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="detail != null" >
-        and detail = #{detail,jdbcType=LONGVARCHAR}
-      </if>
-    </where>
-  </select>
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from goods_info_tb
     where id = #{id,jdbcType=VARCHAR}
@@ -132,7 +56,7 @@
       tips, unit, instruction, 
       start_time, end_time, value, 
       precondition, create_time, update_time, 
-      detail)
+      store_Name, detail)
     values (#{id,jdbcType=VARCHAR}, #{goodsCode,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
       #{costPrice,jdbcType=DECIMAL}, #{salesPromotion,jdbcType=INTEGER}, #{seller,jdbcType=VARCHAR}, 
       #{site,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
@@ -140,7 +64,7 @@
       #{tips,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{instruction,jdbcType=VARCHAR}, 
       #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{value,jdbcType=VARCHAR}, 
       #{precondition,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{detail,jdbcType=LONGVARCHAR})
+      #{storeName,jdbcType=VARCHAR}, #{detail,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.aojing.redstore.goods.pojo.GoodsInfo" >
     insert into goods_info_tb
@@ -207,6 +131,9 @@
       </if>
       <if test="updateTime != null" >
         update_time,
+      </if>
+      <if test="storeName != null" >
+        store_Name,
       </if>
       <if test="detail != null" >
         detail,
@@ -276,6 +203,9 @@
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="storeName != null" >
+        #{storeName,jdbcType=VARCHAR},
+      </if>
       <if test="detail != null" >
         #{detail,jdbcType=LONGVARCHAR},
       </if>
@@ -344,6 +274,9 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="storeName != null" >
+        store_Name = #{storeName,jdbcType=VARCHAR},
+      </if>
       <if test="detail != null" >
         detail = #{detail,jdbcType=LONGVARCHAR},
       </if>
@@ -372,6 +305,7 @@
       precondition = #{precondition,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
+      store_Name = #{storeName,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -396,7 +330,107 @@
       value = #{value,jdbcType=VARCHAR},
       precondition = #{precondition,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      store_Name = #{storeName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+
+
+  <!--manual-->
+  <select id="queryByIdList" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from goods_info_tb
+    where id in
+    <foreach collection="goodsIdList" item="goodsId" separator="," open="(" close=")">
+      #{goodsId}
+    </foreach>
+  </select>
+
+  <select id="queryByGoodsInfo" resultMap="ResultMapWithBLOBs" parameterType="com.aojing.redstore.goods.pojo.GoodsInfo" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from goods_info_tb
+    <where>
+      <if test="id != null" >
+        and  id = #{id}
+      </if>
+      <if test="goodsCode != null" >
+        and  goods_code = #{goodsCode,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null" >
+        and  price = #{price,jdbcType=DECIMAL}
+      </if>
+      <if test="costPrice != null" >
+        and   cost_price = #{costPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="salesPromotion != null" >
+        and sales_promotion = #{salesPromotion,jdbcType=INTEGER}
+      </if>
+      <if test="seller != null" >
+        and  seller = #{seller,jdbcType=VARCHAR}
+      </if>
+      <if test="site != null" >
+        and  site = #{site,jdbcType=VARCHAR}
+      </if>
+      <if test="brand != null" >
+        and brand = #{brand,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null" >
+        and  name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="sellNumber != null" >
+        and  sell_number = #{sellNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="sellStatus != null" >
+        and  sell_status = #{sellStatus,jdbcType=INTEGER}
+      </if>
+      <if test="goodsDesc != null" >
+        and  goods_desc = #{goodsDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="tips != null" >
+        and tips = #{tips,jdbcType=VARCHAR}
+      </if>
+      <if test="unit != null" >
+        and unit = #{unit,jdbcType=VARCHAR}
+      </if>
+      <if test="instruction != null" >
+        and instruction = #{instruction,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null" >
+        and start_time = #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null" >
+        and end_time = #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="value != null" >
+        and value = #{value,jdbcType=VARCHAR}
+      </if>
+      <if test="precondition != null" >
+        and precondition = #{precondition,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        and  update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="detail != null" >
+        and detail = #{detail,jdbcType=LONGVARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="serachBykeyword" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from goods_info_tb
+    WHERE `name` like  <![CDATA[ #{keyword}]]> OR store_Name like   <![CDATA[ #{keyword}]]>
+
+  </select>
 </mapper>

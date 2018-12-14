@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -184,6 +185,16 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
             return Result.createBySuccess("新增商品失败");
         }
         return Result.createByErrorMessage("新增或更新商品参数不正确");
+
+    }
+
+    @Override
+    public Result<List<GoodsInfo>> queryByIdList(List<String> goodsIdList) {
+        List<GoodsInfo> result = goodsInfoMapper.queryByIdList(goodsIdList);
+        if (!CollectionUtils.isEmpty(result)){
+            return Result.createBySuccess(result);
+        }
+        return Result.createByErrorMessage("查询不到商品");
 
     }
 

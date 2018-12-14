@@ -1,17 +1,21 @@
 package com.aojing.redstore.goods.ctrl;
 
 import com.aojing.redstore.goods.common.Result;
+import com.aojing.redstore.goods.common.SearchHistoryAndAutoMatchs;
 import com.aojing.redstore.goods.dto.GoodsDto;
 import com.aojing.redstore.goods.mservice.GoodsMService;
 import com.aojing.redstore.goods.pojo.GoodsInfo;
 import com.aojing.redstore.goods.service.GoodsInfoService;
 import com.aojing.redstore.goods.service.GoodsTypeService;
 import com.aojing.redstore.goods.vo.GoodsInfoVo;
+import com.aojing.redstore.goods.vo.GoodsSearchVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -28,6 +32,10 @@ public class GoodsInfoCtrl {
     private GoodsInfoService goodsInfoService;
     @Autowired
     private GoodsMService goodsMService;
+
+    @Autowired
+    private SearchHistoryAndAutoMatchs searchService;
+
 
     @PostMapping("/addGoods")
     public Result addGoods(GoodsDto goodsDto, HttpServletRequest request) {
@@ -50,12 +58,25 @@ public class GoodsInfoCtrl {
     }
 
     @GetMapping("/queryGoodsList")
-    public Result<PageInfo> queryGoodsList(@RequestParam(defaultValue = "1")String categoryId,
-                                           @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                           @RequestParam(value = "pageSize",defaultValue = "1") int pageSize
-                                           ) {
-        Result<PageInfo> goodsList = goodsMService.queryGoodsList(categoryId,pageNum,pageSize);
+    public Result<PageInfo> queryGoodsList(@RequestParam(defaultValue = "1") String categoryId,
+                                           @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                           @RequestParam(value = "pageSize", defaultValue = "1") int pageSize,
+                                           @RequestParam(value = "test") String test
+    ) {
+        Result<PageInfo> goodsList = goodsMService.queryGoodsList(categoryId, pageNum, pageSize);
         return goodsList;
+    }
+
+    @GetMapping("serach")
+    public Result<List> serach(@RequestParam("keyword") String keyword) {
+        List<String> listKeyword = searchService.getDefaultAutoMatchs(keyword);
+        return Result.createBySuccess(listKeyword);
+    }
+
+    @GetMapping("serachBykeyword")
+    public Result<List<GoodsSearchVo>> serachBykeyword(@RequestParam("keyword") String keyword) {
+        Result<List<GoodsSearchVo>> listKeyword = goodsMService.serachBykeyword(keyword);
+        return listKeyword;
     }
 
 
