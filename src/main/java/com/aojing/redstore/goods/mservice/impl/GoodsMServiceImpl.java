@@ -1,5 +1,6 @@
 package com.aojing.redstore.goods.mservice.impl;
 
+import com.aojing.redstore.goods.common.SearchHistoryAndAutoMatchs;
 import com.aojing.redstore.goods.convert.RestTemplate2ResultConvert;
 import com.aojing.redstore.goods.dao.GoodsInfoMapper;
 import com.aojing.redstore.goods.enums.ExceptionEnum;
@@ -63,6 +64,8 @@ public class GoodsMServiceImpl implements GoodsMService {
 
     @Autowired
     GoodsInfoMapper goodsInfoMapper;
+    @Autowired
+    private SearchHistoryAndAutoMatchs searchService;
 
     @Override
     public Result addOrUpdateGoods(GoodsDto goodsDto, HttpServletRequest request) {
@@ -259,11 +262,14 @@ public class GoodsMServiceImpl implements GoodsMService {
 
     @Override
     public Result<List<GoodsSearchVo>> serachBykeyword(String keyword) {
-        keyword = new StringBuilder().append("%").append(keyword).append("%").toString();
+        keyword = new StringBuilder().append("%").append(keyword.trim()).append("%").toString();
         List<GoodsInfo> goodsInfoList = goodsInfoMapper.serachBykeyword(keyword);
         List<GoodsSearchVo> searchVoList = goodsInfoList.stream().map(e -> new GoodsSearchVo(e.getId(), e.getName(),
                 e.getStoreName())).collect(Collectors.toList());
         //todo 商家图片无法处理
+        //更新redis
+        searchService.updateList("user1",keyword);
+
         return Result.createBySuccess(searchVoList);
     }
 

@@ -69,7 +69,7 @@ public class GoodsInfoCtrl {
 
     @GetMapping("serach")
     public Result<List> serach(@RequestParam("keyword") String keyword) {
-        List<String> listKeyword = searchService.getDefaultAutoMatchs(keyword);
+        List<String> listKeyword = searchService.getDefaultAutoMatchs(keyword.trim());
         return Result.createBySuccess(listKeyword);
     }
 
@@ -77,6 +77,12 @@ public class GoodsInfoCtrl {
     public Result<List<GoodsSearchVo>> serachBykeyword(@RequestParam("keyword") String keyword) {
         Result<List<GoodsSearchVo>> listKeyword = goodsMService.serachBykeyword(keyword);
         return listKeyword;
+    }
+
+    @GetMapping("getLatestRecord")
+    public Result<List<String>> getLatestRecord(@RequestParam("userId") String userId) {
+        List<String> list = searchService.getLatestRecord(userId);
+        return Result.createBySuccess(list);
     }
 
 

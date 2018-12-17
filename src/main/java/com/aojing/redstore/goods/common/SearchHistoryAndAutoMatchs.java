@@ -1,15 +1,11 @@
 package com.aojing.redstore.goods.common;
 
-import org.apache.catalina.Pipeline;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +44,7 @@ public class SearchHistoryAndAutoMatchs {
      * @param userId    用户id
      * @param searchkey 本次搜索关键词
      */
-    public void updateList(Integer userId, String searchkey) {
+    public void updateList(String userId, String searchkey) {
         String key = "recent_search_" + userId;
         // 为了保证事务和性能，采用pipeline
         ListOperations<String, String> ops = stringRedisTemplate.opsForList();
@@ -86,6 +82,22 @@ public class SearchHistoryAndAutoMatchs {
     }
 
     /**
+     * 获取最近的记录
+     *
+     * @param userId 用户id
+     * @return
+     */
+    public List<String> getLatestRecord(String userId) {
+        String key = "recent_search_" + userId;
+        ListOperations<String, String> ops = stringRedisTemplate.opsForList();
+        List<String> all = ops.range(key, 0, -1);// 获取该用户对应的“搜索历史列表”
+        if (all == null) {
+            return null;
+        }
+        return all;
+    }
+
+    /**
      * 从词库列表中获取匹配的列表
      *
      * @param pre
@@ -102,7 +114,7 @@ public class SearchHistoryAndAutoMatchs {
             List<String> matchList = new ArrayList<String>();
             for (String one : all) {
                 //前缀匹配
-                if (one.indexOf(pre)!=-1) {
+                if (one.indexOf(pre) != -1) {
                     matchList.add(one);
                 }
             }
@@ -114,7 +126,7 @@ public class SearchHistoryAndAutoMatchs {
 
     public static void main(String[] args) {
         String aa = "test";
-        List<String> test1 = Arrays.asList("test1", "123","test2","3test");
+        List<String> test1 = Arrays.asList("test1", "123", "test2", "3test");
         List<String> matchList = new ArrayList<String>();
         for (String s : test1) {
             int i = s.indexOf(aa);
