@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aojing.redstore.goods.dao.GoodsLikeInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.aojing.redstore.goods.pojo.GoodsLikeInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="liker_id" property="likerId" jdbcType="VARCHAR" />
+    <result column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="comment_id" property="commentId" jdbcType="VARCHAR" />
+    <result column="menu_id" property="menuId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="seller_id" property="sellerId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, liker_id, goods_id, comment_id, menu_id, create_time, update_time, seller_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods_like_info_tb
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from goods_like_info_tb
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.aojing.redstore.goods.pojo.GoodsLikeInfo" >
+    insert into goods_like_info_tb (id, liker_id, goods_id, 
+      comment_id, menu_id, create_time, 
+      update_time, seller_id)
+    values (#{id,jdbcType=VARCHAR}, #{likerId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
+      #{commentId,jdbcType=VARCHAR}, #{menuId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{sellerId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aojing.redstore.goods.pojo.GoodsLikeInfo" >
+    insert into goods_like_info_tb
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="likerId != null" >
+        liker_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="commentId != null" >
+        comment_id,
+      </if>
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="likerId != null" >
+        #{likerId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="commentId != null" >
+        #{commentId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aojing.redstore.goods.pojo.GoodsLikeInfo" >
+    update goods_like_info_tb
+    <set >
+      <if test="likerId != null" >
+        liker_id = #{likerId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="commentId != null" >
+        comment_id = #{commentId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        menu_id = #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aojing.redstore.goods.pojo.GoodsLikeInfo" >
+    update goods_like_info_tb
+    set liker_id = #{likerId,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=VARCHAR},
+      comment_id = #{commentId,jdbcType=VARCHAR},
+      menu_id = #{menuId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      seller_id = #{sellerId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+
+  <!--manual-->
+  <select id="queryByLikerIdAndGoodsId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from goods_like_info_tb
+    <where>
+      <if test="goodsId != null">
+        and goods_id = #{goods_id}
+      </if>
+      <if test="likerId != null">
+        and liker_id = #{likerId}
+      </if>
+    </where>
+  </select>
+  <select id="queryLikeInfoCount" resultType="int" parameterType="string" >
+    select
+      count(1)
+    from goods_like_info_tb
+    where
+      goods_id = #{goodsId}
+  </select>
+
+  <select id="queryGiveLikeCountListByGoodsId" resultType="map" >
+    SELECT
+    goods_id as goodsId,
+    count( 1 ) as likeCount
+    FROM
+    `goods_like_info_tb`
+    WHERE
+    goods_id IN
+    <foreach collection="goodsIdList" item="goodsId" open="(" close=")" separator=",">
+      #{goodsId}
+    </foreach>
+    GROUP BY
+    goods_id
+  </select>
+
+  <select id="queryGiveLikeCountListBySellerId" resultType="map" >
+    SELECT
+    seller_id as sellerId,
+    count( 1 ) as likeCount
+    FROM
+    `goods_like_info_tb`
+    WHERE
+    seller_id IN
+    <foreach collection="sellerIdList" item="sellerId" open="(" close=")" separator=",">
+      #{sellerId}
+    </foreach>
+    GROUP BY
+    seller_id
+  </select>
+
+  <select id="queryLikeInfoCountByCommentId" parameterType="string" resultType="int">
+    select
+      count(1)
+    from goods_like_info_tb
+    where
+      comment_id = #{commentId}
+  </select>
+</mapper>
