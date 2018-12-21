@@ -3,7 +3,7 @@ package com.aojing.redstore.goods.pojo;
 import java.util.Date;
 
 public class GoodsComentInfo {
-    private Integer id;
+    private String id;
 
     private String commenterId;
 
@@ -17,12 +17,14 @@ public class GoodsComentInfo {
 
     private Date updateTime;
 
-    public Integer getId() {
+    private String sellerId;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public String getCommenterId() {
@@ -71,5 +73,13 @@ public class GoodsComentInfo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId == null ? null : sellerId.trim();
     }
 }

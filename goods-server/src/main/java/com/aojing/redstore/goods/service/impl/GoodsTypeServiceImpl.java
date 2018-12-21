@@ -7,13 +7,16 @@ import com.aojing.redstore.goods.dto.GoodsDto;
 import com.aojing.redstore.goods.enums.CategoryStatusEnum;
 import com.aojing.redstore.goods.pojo.GoodsType;
 import com.aojing.redstore.goods.service.GoodsTypeService;
+import com.aojing.redstore.goods.util.KeyUtil;
+import com.aojing.redstore.goods.vo.CategoryVo;
+import com.aojing.redstore.goods.vo.GoodsTypeVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author gexiao
@@ -30,6 +33,7 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
     public Result addType(GoodsDto goodsDto) {
         GoodsType goodsType = new GoodsType();
         BeanUtils.copyProperties(goodsDto, goodsType);
+        goodsType.setId(KeyUtil.getkey());
         goodsType.setStatus(CategoryStatusEnum.ENABLE.getCode());
         goodsType.setSortOrder(0);
         goodsType.setCreateTime(new Date());
@@ -63,7 +67,7 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
         return Result.createByErrorMessage("更新商品类目失败");
     }
 
-    public Result delType(Integer goodsTypeId) {
+    public Result delType(String goodsTypeId) {
         if (goodsTypeId == null) {
             return Result.createByErrorMessage("删除商品参数不正确");
         }
@@ -85,5 +89,34 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
         return Result.createByErrorMessage("删除商品类目失败");
     }
 
+    public List<CategoryVo> queryCategoryVo(String typeId) {
+        List<GoodsType> goodsList;
+        if (StringUtils.isEmpty(typeId)){
+             goodsList = goodsTypeMapper.queryAllCategory(null);
+        }else{
+             goodsList = goodsTypeMapper.queryAllCategory(typeId);
+        }
+        Set<CategoryVo> goodsTypeVoSet = new HashSet<>();
+        for (GoodsType goodsType : goodsList) {
+            CategoryVo goodsTypeVo = new CategoryVo();
+            goodsTypeVo.setSellerId(goodsType.getSellerId());
+            goodsTypeVoSet.add(goodsTypeVo);
+        }
 
+        for (CategoryVo categoryVo : goodsTypeVoSet) {
+            List<GoodsTypeVo> goodsTypeVoList = new ArrayList<>();
+            for (GoodsType goodsType : goodsList) {
+                if (goodsType.getSellerId().equals(categoryVo.getSellerId())) {
+                    GoodsTypeVo goodsTypeVo = new GoodsTypeVo();
+                    BeanUtils.copyProperties(goodsType, goodsTypeVo);
+                    goodsTypeVoList.add(goodsTypeVo);
+                    categoryVo.setGoodsTypeVoList(goodsTypeVoList);
+                }
+            }
+        }
+
+        List<CategoryVo> categoryVoList = new ArrayList<>(goodsTypeVoSet);
+
+        return categoryVoList;
+    }
 }

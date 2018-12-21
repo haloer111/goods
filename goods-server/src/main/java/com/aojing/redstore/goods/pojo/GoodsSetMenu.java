@@ -1,12 +1,10 @@
 package com.aojing.redstore.goods.pojo;
 
+
 import java.math.BigDecimal;
 import java.util.Date;
-
 public class GoodsSetMenu {
-    private Integer id;
-
-    private String goodSetId;
+    private String id;
 
     private String name;
 
@@ -44,20 +42,12 @@ public class GoodsSetMenu {
 
     private Integer sellCount;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getGoodSetId() {
-        return goodSetId;
-    }
-
-    public void setGoodSetId(String goodSetId) {
-        this.goodSetId = goodSetId == null ? null : goodSetId.trim();
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public String getName() {

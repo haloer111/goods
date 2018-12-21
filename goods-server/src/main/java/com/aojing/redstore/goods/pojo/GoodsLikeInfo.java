@@ -1,13 +1,15 @@
 package com.aojing.redstore.goods.pojo;
 
-import java.util.Date;
 
+import java.util.Date;
 public class GoodsLikeInfo {
-    private Integer id;
+    private String id;
 
     private String likerId;
 
     private String goodsId;
+
+    private String commentId;
 
     private String menuId;
 
@@ -15,12 +17,14 @@ public class GoodsLikeInfo {
 
     private Date updateTime;
 
-    public Integer getId() {
+    private String sellerId;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public String getLikerId() {
@@ -37,6 +41,14 @@ public class GoodsLikeInfo {
 
     public void setGoodsId(String goodsId) {
         this.goodsId = goodsId == null ? null : goodsId.trim();
+    }
+
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(String commentId) {
+        this.commentId = commentId == null ? null : commentId.trim();
     }
 
     public String getMenuId() {
@@ -61,5 +73,13 @@ public class GoodsLikeInfo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId == null ? null : sellerId.trim();
     }
 }

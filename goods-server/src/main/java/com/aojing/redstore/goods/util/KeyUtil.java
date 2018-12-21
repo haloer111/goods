@@ -131,5 +131,12 @@ public class KeyUtil {
         return new StringBuilder().append(RandomUtils.nextInt(0, 89999) + 10000).append(System.currentTimeMillis()).toString();
     }
 
-
+    /**
+     * 获得uuid
+     *
+     * @return UUID
+     */
+    public static String getkey() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
 }

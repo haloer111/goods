@@ -4,21 +4,26 @@ import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.common.SearchHistoryAndAutoMatchs;
 import com.aojing.redstore.goods.dao.GoodsInfoMapper;
 import com.aojing.redstore.goods.dto.GoodsDto;
+import com.aojing.redstore.goods.dto.QueryCountDto;
 import com.aojing.redstore.goods.enums.ExceptionEnum;
 import com.aojing.redstore.goods.enums.FileTypeEnum;
 import com.aojing.redstore.goods.exception.RedStoreException;
 import com.aojing.redstore.goods.form.FileTypeForm;
 import com.aojing.redstore.goods.mservice.GoodsMService;
 import com.aojing.redstore.goods.pojo.GoodsInfo;
+import com.aojing.redstore.goods.service.GoodsComentInfoService;
 import com.aojing.redstore.goods.service.GoodsInfoService;
 import com.aojing.redstore.goods.service.GoodsLikeInfoService;
 import com.aojing.redstore.goods.service.GoodsTypeService;
 import com.aojing.redstore.goods.util.KeyUtil;
 import com.aojing.redstore.goods.common.GoodsInfoVo;
+import com.aojing.redstore.goods.vo.CategoryVo;
 import com.aojing.redstore.goods.vo.GoodsSearchVo;
+import com.aojing.redstore.goods.vo.StoreGoodsVo;
 import com.aojing.redstore.media.client.MediaClient;
 import com.aojing.redstore.media.common.ImgInput;
 import com.aojing.redstore.media.common.MediaOutput;
+import com.aojing.redstore.media.common.QueryOutput;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +63,9 @@ public class GoodsMServiceImpl implements GoodsMService {
     GoodsLikeInfoService goodsLikeInfoService;
 
     @Autowired
+    GoodsComentInfoService comentInfoService;
+
+    @Autowired
     GoodsInfoMapper goodsInfoMapper;
     @Autowired
     private SearchHistoryAndAutoMatchs searchService;
@@ -76,7 +84,7 @@ public class GoodsMServiceImpl implements GoodsMService {
             return Result.createBySuccessMessage("更新商品成功");
         } else {
             //新增
-            String goodsId = KeyUtil.get32UUID();
+            String goodsId = KeyUtil.getkey();
             List<MediaOutput> mediaOutputList = new ArrayList<>();
             //3.调用media服务,上传附件
    /*         if (goodsDto.getImgFileList() != null && !goodsDto.getImgFileList().isEmpty()) {
@@ -207,7 +215,7 @@ public class GoodsMServiceImpl implements GoodsMService {
 
 
     //    delFile[删除商品宣传短视频]  DelPicture[删除商品图片]
-    public Result delFile(Integer mediaId, String userId) {
+    public Result delFile(String mediaId, String userId) {
         if (mediaId == null && StringUtils.isBlank(userId)) {
             return Result.createByErrorMessage("商品删除文件,参数错误");
         }
@@ -253,17 +261,23 @@ public class GoodsMServiceImpl implements GoodsMService {
      */
     public List<GoodsInfoVo> assembleGoodsVoList(List<String> goodsIdList) {
         List<GoodsInfoVo> goodsInfoVoList = new ArrayList<>();
-        //2.查询背景图片[媒体服务]
-//        List<ImgInput> bgImgList = mediaClient.getImgByType(goodsIdList, FileTypeEnum.BG_IMG.getCode());
-        List<ImgInput> imgAllByType = mediaClient.getImgAllByType(goodsIdList);
-
+        //2.查询图片[媒体服务]
+        QueryOutput queryOutput = new QueryOutput();
+        queryOutput.setGoodsIdList(goodsIdList);
+        List<ImgInput> imgAllByType = mediaClient.getImgAllByType(queryOutput);
 
         if (CollectionUtils.isEmpty(imgAllByType)) {
             throw new RedStoreException(ExceptionEnum.QUERY_MEDIA_FAIL);
         }
+
         //点赞数的查询
+        QueryCountDto queryCountDto = new QueryCountDto();
+        queryCountDto.setGoodsIdList(goodsIdList);
         Result<List<Map<String, Object>>> likeCountList =
-                goodsLikeInfoService.queryLikeInfoCount(goodsIdList);
+                goodsLikeInfoService.queryLikeInfoCount(queryCountDto);
+
+        //评论条数的查询
+        Result<List<Map<String, Object>>> commentCountList = comentInfoService.commentCount(queryCountDto);
 
         //商品查询
         List<GoodsInfo> goodsList = goodsInfoService.queryByIdList(goodsIdList);
@@ -285,6 +299,13 @@ public class GoodsMServiceImpl implements GoodsMService {
                 }
             }
 
+            //组装评论条数
+            for (Map<String, Object> item : commentCountList.getData()) {
+                if (goodsInfoVo.getGoodsId().equals(item.get("goodsId"))) {
+                    goodsInfoVo.setCommentCount(Integer.parseInt(String.valueOf(item.get("commentCount"))));
+                }
+            }
+
             //组装商品名,内容,用户id
             for (GoodsInfo goods : goodsList) {
                 if (goodsInfoVo.getGoodsId().equals(goods.getId())) {
@@ -296,7 +317,7 @@ public class GoodsMServiceImpl implements GoodsMService {
                 }
             }
 
-            //todo 根据卖家id查询 icon,username
+            //todo 根据卖家id查询 ,username
         }
 
         return goodsInfoVoList;
@@ -316,4 +337,79 @@ public class GoodsMServiceImpl implements GoodsMService {
     }
 
 
+    public Result<PageInfo> queryStoreGoodsList(String categoryId, int pageNum, int pageSize) {
+        List<StoreGoodsVo> storeGoodsVoList = new ArrayList<>();
+        PageHelper.startPage(pageNum, pageSize);
+        //1.查询商品类目关系表
+        List<CategoryVo> categoryVoList = goodsTypeService.queryCategoryVo(categoryId);
+
+        //组装卖家id
+        for (CategoryVo categoryVo : categoryVoList) {
+            StoreGoodsVo storeGoodsVo = new StoreGoodsVo();
+            storeGoodsVo.setSellerId(categoryVo.getSellerId());
+            storeGoodsVo.setGoodsInfoCount(categoryVo.getGoodsTypeVoList().size() > 0 ?
+                    categoryVo.getGoodsTypeVoList().size() : 0);
+            List<String> goodsIdList =
+                    categoryVo.getGoodsTypeVoList().stream().map(e -> e.getGoodsId()).collect(Collectors.toList());
+            storeGoodsVo.setGoodsIdList(goodsIdList);
+            storeGoodsVoList.add(storeGoodsVo);
+        }
+
+        //商铺id集合
+        List<String> sellerIdList = storeGoodsVoList.stream().map(e -> e.getSellerId()).collect(Collectors.toList());
+
+        //店铺下所有商品id的集合
+
+        //查询商铺媒体信息[查询媒体服务]
+        QueryOutput queryOutput = new QueryOutput();
+        queryOutput.setSellerIdList(sellerIdList);
+        List<ImgInput> imgAllByType = mediaClient.getImgAllByType(queryOutput);
+
+        //查询商铺简介
+
+        //点赞数查询
+        QueryCountDto queryCountDto = new QueryCountDto();
+        queryCountDto.setSellerIdList(sellerIdList);
+        Result<List<Map<String, Object>>> likeCountList =
+                goodsLikeInfoService.queryLikeInfoCount(queryCountDto);
+
+        //评论数查询
+        Result<List<Map<String, Object>>> commentCountList = comentInfoService.commentCount(queryCountDto);
+
+        //略缩图查询
+
+        for (StoreGoodsVo storeGoodsVo : storeGoodsVoList) {
+            //组装点赞数
+            for (Map<String, Object> item : likeCountList.getData()) {
+                if (storeGoodsVo.getSellerId().equals(item.get("sellerId"))) {
+                    storeGoodsVo.setGiveLikeCount(Integer.parseInt(String.valueOf(item.get("likeCount"))));
+                }
+            }
+
+            //组装评论数
+            for (Map<String, Object> item : commentCountList.getData()) {
+                if (storeGoodsVo.getSellerId().equals(item.get("sellerId"))) {
+                    storeGoodsVo.setCommentCount(Integer.parseInt(String.valueOf(item.get("commentCount"))));
+                }
+            }
+
+            //组装头像,背景视频
+            for (ImgInput imgInput : imgAllByType) {
+                if (imgInput.getEntityId().equals(storeGoodsVo.getSellerId())) {
+                    storeGoodsVo.setIcon(imgInput.getIcon());
+                    storeGoodsVo.setBgVideo(imgInput.getBgVideo());
+                }
+            }
+
+            //暂时不处理
+            //storeGoodsVo.setSlightlyThumbnail();
+        }
+
+        //分页处理
+        PageInfo pageInfo = new PageInfo(categoryVoList);
+        pageInfo.setList(storeGoodsVoList);
+
+        return Result.createBySuccess(pageInfo);
+
+    }
 }

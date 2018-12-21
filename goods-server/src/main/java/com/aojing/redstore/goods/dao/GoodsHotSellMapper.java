@@ -1,15 +1,18 @@
 package com.aojing.redstore.goods.dao;
 
+import com.aojing.redstore.goods.pojo.GoodsExamineInfo;
 import com.aojing.redstore.goods.pojo.GoodsHotSell;
+import org.apache.ibatis.annotations.Mapper;
 
-public interface GoodsHotSellMapper {
-    int deleteByPrimaryKey(Integer id);
+@Mapper
+public interface GoodsHotSellMapper  {
+    int deleteByPrimaryKey(String id);
 
     int insert(GoodsHotSell record);
 
     int insertSelective(GoodsHotSell record);
 
-    GoodsHotSell selectByPrimaryKey(Integer id);
+    GoodsHotSell selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(GoodsHotSell record);
 

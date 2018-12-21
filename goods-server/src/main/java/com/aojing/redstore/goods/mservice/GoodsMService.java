@@ -17,11 +17,20 @@ public interface GoodsMService {
 
     Result addOrUpdateGoods(GoodsDto goodsDto, HttpServletRequest request);
 
-    public Result delFile(Integer mediaId, String userId);
+    public Result delFile(String mediaId, String userId);
 
     Result<PageInfo> queryGoodsList(String categoryId, int pageNum, int pageSize);
 
     Result<List<GoodsSearchVo>> serachBykeyword(String keyword);
 
     public List<GoodsInfoVo> assembleGoodsVoList(List<String> goodsIdList);
+
+    /**
+     * 首页展示店铺vo
+     * @param categoryId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    Result<PageInfo> queryStoreGoodsList(String categoryId, int pageNum, int pageSize);
 }

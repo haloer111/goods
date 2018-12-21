@@ -25,6 +25,10 @@ public class GoodsInfoVo {
      */
     private int likeCount;
     /**
+     * 评论条数
+     */
+    private int commentCount;
+    /**
      * 内容
      */
     private String content;

@@ -171,7 +171,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
             GoodsInfo goods = new GoodsInfo();
             // 新增
             // 1. uuid生成goodsid,
-            String goodscode = KeyUtil.getGoodCode();
+            String goodscode = KeyUtil.getkey();
 
             BeanUtils.copyProperties(goodsDto, goods);
             goods.setGoodsCode(goodscode);

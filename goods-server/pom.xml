@@ -145,11 +145,24 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
         <!--media-client-->
         <dependency>
             <groupId>com.aojing.redstore</groupId>
             <artifactId>media-client</artifactId>
         </dependency>
+
+        <!--mybatis plus-->
+        <!--<dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.0.6</version>
+        </dependency>-->
     </dependencies>
 
     <build>

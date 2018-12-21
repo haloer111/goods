@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2018/12/4 18:09
  */
 @RestController
-@RequestMapping("/goods")
+@RequestMapping("/api/goods")
 public class GoodsInfoCtrl {
 
     @Autowired
@@ -52,7 +52,7 @@ public class GoodsInfoCtrl {
     }
 
     @GetMapping("/deleteGoodsFile")
-    public Result deleteGoodsFile(Integer mediaId, String userId) {
+    public Result deleteGoodsFile(String mediaId, String userId) {
         return goodsMService.delFile(mediaId, userId);
     }
 
@@ -83,14 +83,18 @@ public class GoodsInfoCtrl {
         return Result.createBySuccess(list);
     }
 
-    @PostMapping("queryGoodsByIds")
-    public List<GoodsInfoVo> queryGoodsByIds(@RequestParam("goodsIdList") List<String> goodsIdList){
-        return goodsMService.assembleGoodsVoList(goodsIdList);
+
+    @PostMapping("/queryGoods")
+    public Result<List<GoodsInfoVo>> queryGoodsByIds(@RequestParam("goodsIdList") List<String> goodsIdList) {
+        return Result.createBySuccess(goodsMService.assembleGoodsVoList(goodsIdList));
     }
 
-    @PostMapping("decreaseStock")
-    public void decreaseStock(@RequestBody List<DecreaseStockInput> decreaseStockInputList){
-        goodsInfoService.decreaseStock(decreaseStockInputList);
+    @GetMapping("/queryStoreGoods")
+    public Result<PageInfo> queryStoreGoods(@RequestParam(value = "categoryId",defaultValue = "") String categoryId,
+                                            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                            @RequestParam(value = "pageSize", defaultValue = "6") int pageSize) {
+        return goodsMService.queryStoreGoodsList(categoryId, pageNum, pageSize);
     }
+
 
 }

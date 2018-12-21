@@ -1,6 +1,7 @@
 package com.aojing.redstore.goods.service;
 
 import com.aojing.redstore.goods.common.Result;
+import com.aojing.redstore.goods.dto.QueryCountDto;
 
 import java.util.List;
 import java.util.Map;
@@ -27,5 +28,5 @@ public interface GoodsLikeInfoService {
      */
     Result<Integer> queryLikeInfoCount(String goodsId);
 
-    Result<List<Map<String, Object>>> queryLikeInfoCount(List<String> goodsIdList);
+    Result<List<Map<String, Object>>> queryLikeInfoCount(QueryCountDto queryCountDto);
 }

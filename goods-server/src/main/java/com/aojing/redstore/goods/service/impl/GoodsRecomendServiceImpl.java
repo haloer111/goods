@@ -4,6 +4,7 @@ import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.dao.GoodsRecomendMapper;
 import com.aojing.redstore.goods.pojo.GoodsRecomend;
 import com.aojing.redstore.goods.service.GoodsRecomendService;
+import com.aojing.redstore.goods.util.KeyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class GoodsRecomendServiceImpl implements GoodsRecomendService {
     private GoodsRecomendMapper GoodsRecomendMapper;
 
     //    Disrecomend[解除推荐]
-    Result Disrecomend(Integer id) {
+    Result Disrecomend(String id) {
         if (id == null ) {
             return Result.createByErrorMessage("解除推荐,参数不正确");
         }
@@ -41,6 +42,7 @@ public class GoodsRecomendServiceImpl implements GoodsRecomendService {
         }
 
         GoodsRecomend GoodsRecomend = new GoodsRecomend();
+        GoodsRecomend.setId(KeyUtil.getkey());
         GoodsRecomend.setSellerId(sellerId);
         GoodsRecomend.setGoodsId(goodsId);
         //todo recomender类型不明确

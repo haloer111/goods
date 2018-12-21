@@ -3,6 +3,7 @@ package com.aojing.redstore.goods.service;
 import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.dto.GoodsDto;
 import com.aojing.redstore.goods.pojo.GoodsType;
+import com.aojing.redstore.goods.vo.CategoryVo;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public interface GoodsTypeService {
      * @return
      */
     @Deprecated
-    public Result delType(Integer goodsTypeId);
+    public Result delType(String goodsTypeId);
 
     /**
      * 更新类目
@@ -60,5 +61,12 @@ public interface GoodsTypeService {
      * @return
      */
     public Result<List<String>> queryGoodsIdByTypeId(String categoryId);
+
+    /**
+     * 查询店铺下指定类目的商品,不传则默认查询店铺下所有类目的商品
+     * @param typeId 类目id
+     * @return
+     */
+    public List<CategoryVo> queryCategoryVo(String typeId);
 
 }

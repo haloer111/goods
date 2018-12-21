@@ -19,4 +19,5 @@ public class GoodsCategoryVo implements Serializable {
 
     private String id;
     private String name;
+
 }

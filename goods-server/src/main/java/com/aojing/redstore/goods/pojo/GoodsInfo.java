@@ -1,8 +1,8 @@
 package com.aojing.redstore.goods.pojo;
 
+
 import java.math.BigDecimal;
 import java.util.Date;
-
 public class GoodsInfo {
     private String id;
 
@@ -49,6 +49,8 @@ public class GoodsInfo {
     private Date updateTime;
 
     private String storeName;
+
+    private String storeId;
 
     private String detail;
 
@@ -234,6 +236,14 @@ public class GoodsInfo {
 
     public void setStoreName(String storeName) {
         this.storeName = storeName == null ? null : storeName.trim();
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId == null ? null : storeId.trim();
     }
 
     public String getDetail() {
