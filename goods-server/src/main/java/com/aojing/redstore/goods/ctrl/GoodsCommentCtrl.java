@@ -7,10 +7,7 @@ import com.aojing.redstore.goods.service.GoodsComentInfoService;
 import com.aojing.redstore.goods.vo.CommentVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class GoodsCommentCtrl {
 
 
     @PostMapping("/add")
-    public Result comment(CommentDto commentDto) {
+    public Result comment(@RequestBody CommentDto commentDto) {
         GoodsComentInfo comentInfo = new GoodsComentInfo();
         BeanUtils.copyProperties(commentDto, comentInfo);
         return comentInfoService.comment(comentInfo);

@@ -129,13 +129,16 @@
 
 
   <!--manual-->
-  <select id="queryByLikerIdAndGoodsId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="queryByLikerIdAndGoodsIdOrSellerId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from goods_like_info_tb
     <where>
       <if test="goodsId != null">
-        and goods_id = #{goods_id}
+        and goods_id = #{goodsId}
+      </if>
+      <if test="sellerId != null">
+        and seller_id = #{sellerId}
       </if>
       <if test="likerId != null">
         and liker_id = #{likerId}

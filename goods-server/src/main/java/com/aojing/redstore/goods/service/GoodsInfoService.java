@@ -30,7 +30,7 @@ public interface GoodsInfoService {
      * @param goodsInfo
      * @return
      */
-    Result<List<GoodsInfo>> queryBySelective(GoodsInfo goodsInfo);
+    List<GoodsInfo> queryBySelective(GoodsInfo goodsInfo);
     /**
      * 新增或修改商品
      * @param goodsDto

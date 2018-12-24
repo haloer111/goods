@@ -1,15 +1,13 @@
 package com.aojing.redstore.goods.dao;
 
-import com.aojing.redstore.goods.pojo.GoodsExamineInfo;
 import com.aojing.redstore.goods.pojo.GoodsLikeInfo;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
 
-@Mapper
-public interface GoodsLikeInfoMapper  {
+public interface GoodsLikeInfoMapper  extends BaseMapper<GoodsLikeInfo> {
     int deleteByPrimaryKey(String id);
 
     int insert(GoodsLikeInfo record);
@@ -24,7 +22,9 @@ public interface GoodsLikeInfoMapper  {
 
 
     //manual
-    GoodsLikeInfo queryByLikerIdAndGoodsId(String likerId, String goodsId);
+    GoodsLikeInfo queryByLikerIdAndGoodsIdOrSellerId(@Param("likerId")String likerId,
+                                                     @Param("goodsId")String goodsId,
+                                                     @Param("sellerId")String sellerId);
 
     Integer queryLikeInfoCount(String goodsId);
 

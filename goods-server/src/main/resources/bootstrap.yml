@@ -20,7 +20,7 @@ spring:
     filters: stat
     logSlowSql: true
   application:
-    name: goods
+    name: service-goods
   # redis部分
   redis:
     host: 192.168.2.20
@@ -45,6 +45,11 @@ logging:
 #  #config-location: classpath:mybatis/mybatis-config.xml
 # # mapper-locations: classpath*:mappers/*Mapper.xml
 #  mapper-locations: classpath:mappers/*Mapper.xml
+mybatis-plus:
+ # config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath*:mapper/*.xml
+  global-config:
+    refresh: true
 
 #pagehelper
 pagehelper:

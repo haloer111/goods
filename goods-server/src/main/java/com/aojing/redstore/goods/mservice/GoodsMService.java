@@ -33,4 +33,13 @@ public interface GoodsMService {
      * @return
      */
     Result<PageInfo> queryStoreGoodsList(String categoryId, int pageNum, int pageSize);
+
+
+    /**
+     * 查询热搜商品
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    Result<PageInfo> queryHotGoodsList(int pageNum, int pageSize);
 }

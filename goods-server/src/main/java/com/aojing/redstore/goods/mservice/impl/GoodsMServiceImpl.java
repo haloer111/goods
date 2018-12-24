@@ -1,8 +1,10 @@
 package com.aojing.redstore.goods.mservice.impl;
 
+import com.alipay.api.domain.OrderDetail;
 import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.common.SearchHistoryAndAutoMatchs;
 import com.aojing.redstore.goods.dao.GoodsInfoMapper;
+import com.aojing.redstore.goods.dao.GoodsTypeMapper;
 import com.aojing.redstore.goods.dto.GoodsDto;
 import com.aojing.redstore.goods.dto.QueryCountDto;
 import com.aojing.redstore.goods.enums.ExceptionEnum;
@@ -19,11 +21,13 @@ import com.aojing.redstore.goods.util.KeyUtil;
 import com.aojing.redstore.goods.common.GoodsInfoVo;
 import com.aojing.redstore.goods.vo.CategoryVo;
 import com.aojing.redstore.goods.vo.GoodsSearchVo;
+import com.aojing.redstore.goods.vo.HotGoodsVo;
 import com.aojing.redstore.goods.vo.StoreGoodsVo;
 import com.aojing.redstore.media.client.MediaClient;
 import com.aojing.redstore.media.common.ImgInput;
 import com.aojing.redstore.media.common.MediaOutput;
 import com.aojing.redstore.media.common.QueryOutput;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -61,12 +65,15 @@ public class GoodsMServiceImpl implements GoodsMService {
     GoodsTypeService goodsTypeService;
     @Autowired
     GoodsLikeInfoService goodsLikeInfoService;
+    @Autowired
+    GoodsTypeMapper goodsTypeMapper;
+    @Autowired
+    GoodsInfoMapper goodsInfoMapper;
+
 
     @Autowired
     GoodsComentInfoService comentInfoService;
 
-    @Autowired
-    GoodsInfoMapper goodsInfoMapper;
     @Autowired
     private SearchHistoryAndAutoMatchs searchService;
 
@@ -285,6 +292,11 @@ public class GoodsMServiceImpl implements GoodsMService {
             log.error("{},goodsIdList={}", ExceptionEnum.PRODUCT_NOT_EXIST.getMessage(), goodsIdList);
             throw new RedStoreException(ExceptionEnum.PRODUCT_NOT_EXIST);
         }
+
+        //todo 是否收藏,[收藏服务]
+
+        //todo 月售,[订单服务查询]
+
         //组装id,bgimg和其他图片,视频信息
         for (ImgInput input : imgAllByType) {
             GoodsInfoVo goodsInfoVo = new GoodsInfoVo();
@@ -310,14 +322,19 @@ public class GoodsMServiceImpl implements GoodsMService {
             for (GoodsInfo goods : goodsList) {
                 if (goodsInfoVo.getGoodsId().equals(goods.getId())) {
                     goodsInfoVo.setGoodsName(goods.getName());
-                    goodsInfoVo.setPrice(goods.getPrice().doubleValue());
-                    //不清楚用那个字段
+                    goodsInfoVo.setPrice(goods.getPrice());
                     goodsInfoVo.setContent(goods.getDetail());
-                    goodsInfoVo.setUserId(goods.getSeller());
+                    goodsInfoVo.setSellerId(goods.getSeller());
+                    goodsInfoVo.setDetail(goods.getDetail());
+                    goodsInfoVo.setGoodsDesc(goods.getGoodsDesc());
+                    goodsInfoVo.setTips(goods.getTips());
+                    goodsInfoVo.setStoreName(goods.getStoreName());
+                    goodsInfoVo.setStoreId(goods.getStoreId());
+                    goodsInfoVo.setPriceTip(goods.getPriceTip());
+                    goodsInfoVo.setOriginalPrice(goods.getOriginalPrice());
                 }
             }
 
-            //todo 根据卖家id查询 ,username
         }
 
         return goodsInfoVoList;
@@ -338,8 +355,12 @@ public class GoodsMServiceImpl implements GoodsMService {
 
 
     public Result<PageInfo> queryStoreGoodsList(String categoryId, int pageNum, int pageSize) {
-        List<StoreGoodsVo> storeGoodsVoList = new ArrayList<>();
+
+        // Page<GoodsType> objects =   PageHelper.startPage(1, 1).doSelectPage(() -> goodsTypeMapper.queryAllCategory
+        // (categoryId));
+
         PageHelper.startPage(pageNum, pageSize);
+        List<StoreGoodsVo> storeGoodsVoList = new ArrayList<>();
         //1.查询商品类目关系表
         List<CategoryVo> categoryVoList = goodsTypeService.queryCategoryVo(categoryId);
 
@@ -412,4 +433,27 @@ public class GoodsMServiceImpl implements GoodsMService {
         return Result.createBySuccess(pageInfo);
 
     }
+
+    public Result<PageInfo> queryHotGoodsList(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        QueryWrapper<GoodsInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("sales_promotion","1");
+        //todo 排序规则后期再改
+        queryWrapper.orderByDesc("price");
+        List<GoodsInfo> goodsInfoList = goodsInfoMapper.selectList(queryWrapper);
+        if (CollectionUtils.isEmpty(goodsInfoList)) {
+            return Result.createBySuccess(new PageInfo(new ArrayList()));
+        }
+
+        List<HotGoodsVo> hotGoodsVoList = goodsInfoList.stream().map(e -> {
+            HotGoodsVo hotGoodsVo = new HotGoodsVo();
+            BeanUtils.copyProperties(e, hotGoodsVo);
+            return hotGoodsVo;
+        }).collect(Collectors.toList());
+
+        PageInfo page = new PageInfo(goodsInfoList);
+        page.setList(hotGoodsVoList);
+        return Result.createBySuccess(page);
+    }
+
 }

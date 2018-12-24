@@ -26,13 +26,13 @@ public class GoodsLikeInfoServiceImpl implements GoodsLikeInfoService {
     GoodsLikeInfoMapper goodsLikeInfoMapper;
 
     //    giveLike[点赞]
-    public Result giveLike(String likerId, String goodsId) {
+    public Result giveLike(String likerId, String goodsId, String sellerId) {
 
-        if (StringUtils.isNotBlank(goodsId) && StringUtils.isNotBlank(likerId)) {
+        if (StringUtils.isBlank(likerId)||(StringUtils.isBlank(goodsId)&&StringUtils.isBlank(sellerId))) {
             return Result.createByErrorMessage("点赞,参数不正确");
         }
         // 1.查询是否点过赞
-        Result<GoodsLikeInfo> queryResult = this.queryLikeInfo(likerId, goodsId);
+        Result<GoodsLikeInfo> queryResult = this.queryLikeInfo(likerId, goodsId,sellerId );
         if (queryResult.isSuccess()) {
             String id = queryResult.getData().getId();
             //如果已经点过赞则触发删除
@@ -46,7 +46,12 @@ public class GoodsLikeInfoServiceImpl implements GoodsLikeInfoService {
             GoodsLikeInfo likeInfo = new GoodsLikeInfo();
             likeInfo.setId(KeyUtil.getkey());
             likeInfo.setLikerId(likerId);
-            likeInfo.setGoodsId(goodsId);
+            if (StringUtils.isNotBlank(goodsId)){
+                likeInfo.setGoodsId(goodsId);
+            }
+            if (StringUtils.isNotBlank(sellerId)){
+                likeInfo.setSellerId(sellerId);
+             }
             likeInfo.setCreateTime(new Date());
 
             int result = goodsLikeInfoMapper.insertSelective(likeInfo);
@@ -57,11 +62,11 @@ public class GoodsLikeInfoServiceImpl implements GoodsLikeInfoService {
         }
     }
 
-    Result<GoodsLikeInfo> queryLikeInfo(String likerId, String goodsId) {
+    Result<GoodsLikeInfo> queryLikeInfo(String likerId, String goodsId, String sellerId) {
         if (StringUtils.isBlank(goodsId) && StringUtils.isBlank(likerId)) {
             return Result.createByErrorMessage("查询,参数不正确");
         }
-        GoodsLikeInfo likeInfoList = goodsLikeInfoMapper.queryByLikerIdAndGoodsId(likerId, goodsId);
+        GoodsLikeInfo likeInfoList = goodsLikeInfoMapper.queryByLikerIdAndGoodsIdOrSellerId(likerId, goodsId, sellerId);
         if (likeInfoList != null) {
             return Result.createBySuccess(likeInfoList);
         }

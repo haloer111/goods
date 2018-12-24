@@ -1,7 +1,10 @@
 package com.aojing.redstore.goods.pojo;
 
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.util.Date;
+@TableName("goods_like_info_tb")
 public class GoodsLikeInfo {
     private String id;
 

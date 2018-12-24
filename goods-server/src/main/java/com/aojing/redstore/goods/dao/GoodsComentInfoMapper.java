@@ -1,14 +1,13 @@
 package com.aojing.redstore.goods.dao;
 
 import com.aojing.redstore.goods.pojo.GoodsComentInfo;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
 
-@Mapper
-public interface GoodsComentInfoMapper {
+public interface GoodsComentInfoMapper extends BaseMapper<GoodsComentInfo> {
     int deleteByPrimaryKey(String id);
 
     int insert(GoodsComentInfo record);

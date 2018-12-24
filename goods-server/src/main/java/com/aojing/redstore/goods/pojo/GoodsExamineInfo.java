@@ -1,8 +1,11 @@
 package com.aojing.redstore.goods.pojo;
 
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.util.Date;
 
+@TableName("goods_examin_info_tb")
 public class GoodsExamineInfo {
     private String id;
 

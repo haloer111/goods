@@ -19,9 +19,9 @@ public class GoodsLikerCtrl {
     private GoodsLikeInfoService goodsLikeInfoService;
 
     @GetMapping("/add")
-    public boolean giveLike(String likerId, String goodsId) {
+    public boolean giveLike(String likerId, String goodsId,String sellerId) {
 
-        return goodsLikeInfoService.giveLike(likerId, goodsId).isSuccess();
+        return goodsLikeInfoService.giveLike(likerId, goodsId, sellerId).isSuccess();
     }
 
     @GetMapping("/count")

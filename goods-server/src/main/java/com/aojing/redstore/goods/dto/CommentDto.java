@@ -16,5 +16,9 @@ public class CommentDto {
     private String menuId;
 
     private String content;
+    /**
+     *
+     */
+    private String sellerId;
 
 }

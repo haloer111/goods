@@ -16,9 +16,10 @@ public interface GoodsLikeInfoService {
      *
      * @param likerId 点赞人id
      * @param goodsId 商品id
+     * @param sellerId
      * @return
      */
-    Result giveLike(String likerId, String goodsId);
+    Result giveLike(String likerId, String goodsId, String sellerId);
 
     /**
      * 根据商品id查询点赞数

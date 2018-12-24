@@ -58,16 +58,16 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
     //    Query[根据商品类型查询商品信息]
-    public Result<List<GoodsInfo>> queryBySelective(GoodsInfo goodsInfo) {
+    public List<GoodsInfo> queryBySelective(GoodsInfo goodsInfo) {
         if (goodsInfo == null) {
-            return Result.createByErrorMessage("查询商品,参数不正确");
+            return null;
         }
         List<GoodsInfo> goodsInfoList = goodsInfoMapper.queryByGoodsInfo(goodsInfo);
         if (!goodsInfoList.isEmpty()) {
-            return Result.createBySuccess("查询商品,成功", goodsInfoList);
+            return goodsInfoList;
 
         }
-        return Result.createByErrorMessage("查询商品,失败");
+        return goodsInfoList;
 
     }
 

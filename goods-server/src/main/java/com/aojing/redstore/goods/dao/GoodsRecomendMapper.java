@@ -2,10 +2,9 @@ package com.aojing.redstore.goods.dao;
 
 import com.aojing.redstore.goods.pojo.GoodsExamineInfo;
 import com.aojing.redstore.goods.pojo.GoodsRecomend;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-@Mapper
-public interface GoodsRecomendMapper  {
+public interface GoodsRecomendMapper  extends BaseMapper<GoodsRecomend> {
     int deleteByPrimaryKey(String id);
 
     int insert(GoodsRecomend record);

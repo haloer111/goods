@@ -2,13 +2,12 @@ package com.aojing.redstore.goods.dao;
 
 import com.aojing.redstore.goods.pojo.GoodsExamineInfo;
 import com.aojing.redstore.goods.pojo.GoodsType;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-@Mapper
-public interface GoodsTypeMapper  {
+public interface GoodsTypeMapper  extends BaseMapper<GoodsType> {
     int deleteByPrimaryKey(String id);
 
     int insert(GoodsType record);

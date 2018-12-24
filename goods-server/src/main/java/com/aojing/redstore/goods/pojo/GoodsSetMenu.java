@@ -1,8 +1,11 @@
 package com.aojing.redstore.goods.pojo;
 
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.math.BigDecimal;
 import java.util.Date;
+@TableName("goods_set_menu_tb")
 public class GoodsSetMenu {
     private String id;
 

@@ -1,8 +1,11 @@
 package com.aojing.redstore.goods.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+@TableName("goods_info_tb")
 public class GoodsInfo {
     private String id;
 
@@ -51,6 +54,10 @@ public class GoodsInfo {
     private String storeName;
 
     private String storeId;
+
+    private BigDecimal originalPrice;
+
+    private String priceTip;
 
     private String detail;
 
@@ -244,6 +251,22 @@ public class GoodsInfo {
 
     public void setStoreId(String storeId) {
         this.storeId = storeId == null ? null : storeId.trim();
+    }
+
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+
+    public String getPriceTip() {
+        return priceTip;
+    }
+
+    public void setPriceTip(String priceTip) {
+        this.priceTip = priceTip == null ? null : priceTip.trim();
     }
 
     public String getDetail() {

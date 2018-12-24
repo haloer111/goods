@@ -3,6 +3,7 @@ package com.aojing.redstore.goods.common;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -35,11 +36,11 @@ public class GoodsInfoVo {
     /**
      * 卖家id
      */
-    private String userId;
+    private String sellerId;
     /**
-     * 卖家名称
+     * 店铺id
      */
-    private String userName;
+    private String storeId;
     /**
      * 卖家头像
      */
@@ -71,7 +72,43 @@ public class GoodsInfoVo {
      */
     private List<String> productVideo;
 
-    private double price;
+    /**
+     * 价格
+     */
+    private BigDecimal price;
 
+    /**
+     * 商品详情
+     */
+    private String detail;
 
+    /**
+     * 商品描述
+     */
+    private String goodsDesc;
+
+    /**
+     * 温馨提示
+     */
+    private String tips;
+
+    /**
+     * 月售
+     */
+    private int monthlySales;
+
+    /**
+     * 店名
+     */
+    private String storeName;
+
+    /**
+     * 原价
+     */
+    private BigDecimal originalPrice;
+
+    /**
+     * 价格提示
+     */
+    private String priceTip;
 }

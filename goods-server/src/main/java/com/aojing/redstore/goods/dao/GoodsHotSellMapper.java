@@ -2,10 +2,9 @@ package com.aojing.redstore.goods.dao;
 
 import com.aojing.redstore.goods.pojo.GoodsExamineInfo;
 import com.aojing.redstore.goods.pojo.GoodsHotSell;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-@Mapper
-public interface GoodsHotSellMapper  {
+public interface GoodsHotSellMapper  extends BaseMapper<GoodsHotSell> {
     int deleteByPrimaryKey(String id);
 
     int insert(GoodsHotSell record);

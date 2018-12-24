@@ -1,6 +1,5 @@
 package com.aojing.redstore.goods.ctrl;
 
-import com.aojing.redstore.goods.common.DecreaseStockInput;
 import com.aojing.redstore.goods.common.Result;
 import com.aojing.redstore.goods.common.SearchHistoryAndAutoMatchs;
 import com.aojing.redstore.goods.dto.GoodsDto;
@@ -42,7 +41,7 @@ public class GoodsInfoCtrl {
     }
 
     @PostMapping("/queryBySelective")
-    public Result queryBySelective(GoodsInfo goodsInfo) {
+    public List<GoodsInfo> queryBySelective(GoodsInfo goodsInfo) {
         return goodsInfoService.queryBySelective(goodsInfo);
     }
 
@@ -85,16 +84,21 @@ public class GoodsInfoCtrl {
 
 
     @PostMapping("/queryGoods")
-    public Result<List<GoodsInfoVo>> queryGoodsByIds(@RequestParam("goodsIdList") List<String> goodsIdList) {
+    public Result<List<GoodsInfoVo>> queryGoodsByIds(@RequestBody List<String> goodsIdList) {
         return Result.createBySuccess(goodsMService.assembleGoodsVoList(goodsIdList));
     }
 
     @GetMapping("/queryStoreGoods")
-    public Result<PageInfo> queryStoreGoods(@RequestParam(value = "categoryId",defaultValue = "") String categoryId,
+    public Result<PageInfo> queryStoreGoods(@RequestParam(value = "categoryId", defaultValue = "") String categoryId,
                                             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                            @RequestParam(value = "pageSize", defaultValue = "6") int pageSize) {
+                                            @RequestParam(value = "pageSize", defaultValue = "1") int pageSize) {
         return goodsMService.queryStoreGoodsList(categoryId, pageNum, pageSize);
     }
 
-
+    @GetMapping("/queryHotGoods")
+    public Result<PageInfo> queryHotGoods(
+            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+        return goodsMService.queryHotGoodsList( pageNum, pageSize);
+    }
 }
